@@ -794,6 +794,29 @@ function RoomDetails() {
 
   return (
     <div className="min-h-screen bg-zinc-950">
+      {/* Navigation */}
+      <div className="bg-zinc-900 border-b border-zinc-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-blue-400 hover:text-blue-300"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </button>
+
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <HomeIcon className="w-4 h-4" />
+              Home
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Image Gallery */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <ImageGallery images={room.images} title={room.title} />

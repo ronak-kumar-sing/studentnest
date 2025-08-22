@@ -184,7 +184,7 @@ function Main() {
             <h2 className='text-white text-xl font-semibold'>Filters</h2>
             <button
               onClick={clearAllFilters}
-              className='text-blue-400 hover:text-blue-300 text-sm underline transition-colors'
+              className='text-white hover:text-blue-300 text-sm  transition-colors cursor-pointer'
             >
               Clear All
             </button>
@@ -348,8 +348,8 @@ function Main() {
                   key={rating}
                   onClick={() => setRatingFilter(rating === ratingFilter ? 0 : rating)}
                   className={`px-3 py-1 rounded-lg text-sm transition-all ${ratingFilter >= rating
-                      ? 'bg-yellow-500 text-black'
-                      : 'bg-white/10 text-white/70 hover:bg-white/20'
+                    ? 'bg-yellow-500 text-black'
+                    : 'bg-white/10 text-white/70 hover:bg-white/20'
                     }`}
                 >
                   {rating}★

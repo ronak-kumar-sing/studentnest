@@ -137,13 +137,23 @@ const BookingPage = () => {
       {/* Header */}
       <div className="bg-zinc-900 border-b border-zinc-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <button
-            onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-blue-400 hover:text-blue-300 mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to room details
-          </button>
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-blue-400 hover:text-blue-300"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to room details
+            </button>
+
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              Home
+            </Link>
+          </div>
 
           <div className="flex items-center justify-between">
             <div>
@@ -317,6 +327,8 @@ const BookingPage = () => {
                         onChange={(e) => handleInputChange('duration', e.target.value)}
                         className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
+                        <option value="1">1 months</option>
+                        <option value="2">2 months</option>
                         <option value="3">3 months</option>
                         <option value="6">6 months</option>
                         <option value="11">11 months</option>

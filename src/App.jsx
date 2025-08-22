@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
@@ -11,16 +12,16 @@ import Aurora from './Backgrounds/Aurora/Aurora'
 
 function App() {
   const location = useLocation()
-  
+
   // Routes where header should be hidden
   const hideHeaderRoutes = [
     '/room/',
     '/book',
     '/visit'
   ]
-  
+
   // Check if current route should hide header
-  const shouldHideHeader = hideHeaderRoutes.some(route => 
+  const shouldHideHeader = hideHeaderRoutes.some(route =>
     location.pathname.includes(route)
   )
 
@@ -37,8 +38,8 @@ function App() {
 
 
       </div>
-      <div className='relative z-10 pt-20'>
-        <Header />
+      <div className={`relative z-10 ${shouldHideHeader ? 'pt-0' : 'pt-20'}`}>
+        {!shouldHideHeader && <Header />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -48,6 +49,7 @@ function App() {
           <Route path="/room/:id/book" element={<BookingPage />} />
           <Route path="/room/:id/visit" element={<ScheduleVisitPage />} />
         </Routes>
+        {!shouldHideHeader && <Footer />}
       </div>
 
       {/* Main content with semi-transparent overlay for better text readability */}
