@@ -21,8 +21,7 @@ const notificationReducer = (state, action) => {
 const initialState = {
   notifications: [],
   unreadCount: 0,
-  pushEnabled: false,
-  toasts: []
+  pushEnabled: false
 };
 
 const NotificationContext = createContext();
@@ -57,7 +56,6 @@ export const NotificationProvider = ({ children }) => {
   const markAllAsRead = () => false;
   const clearAllNotifications = () => false;
   const showToast = () => false;
-  const removeToast = () => false;
 
   const value = {
     ...state,
@@ -65,8 +63,7 @@ export const NotificationProvider = ({ children }) => {
     markAsRead,
     markAllAsRead,
     clearAllNotifications,
-    showToast,
-    removeToast
+    showToast
   };
 
   return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>;

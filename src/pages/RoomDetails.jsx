@@ -88,8 +88,9 @@ const roomService = {
       ],
       owner: {
         ...room.owner,
-        phone: '+91 98765 43210',
-        email: 'owner@example.com',
+        phone: room.owner.phone || '+91 98765 43210',
+        email: room.owner.email || 'owner@example.com',
+        whatsapp: room.owner.whatsapp || room.owner.phone || '+91 98765 43210',
         responseRate: 95,
         responseTime: 'within 1 hour',
         joinedDate: 'Member since 2020'
@@ -612,6 +613,34 @@ const OwnerContact = ({ owner }) => {
         </div>
       </div>
 
+      {/* Contact Information */}
+      <div className="bg-zinc-800 rounded-xl p-4 mb-4 border border-zinc-700">
+        <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+          <Mail className="w-4 h-4 text-blue-400" />
+          Contact Details
+        </h4>
+
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-sm">
+            <Mail className="w-3 h-3 text-blue-400 flex-shrink-0" />
+            <span className="text-zinc-400 w-18">Email:</span>
+            <span className="text-white font-mono text-xs break-all">{owner.email}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-sm">
+            <Phone className="w-3 h-3 text-green-400 flex-shrink-0" />
+            <span className="text-zinc-400 w-18">Phone:</span>
+            <span className="text-white font-mono">{owner.phone}</span>
+          </div>
+
+          <div className="flex items-center gap-2 text-sm">
+            <MessageCircle className="w-3 h-3 text-green-500 flex-shrink-0" />
+            <span className="text-zinc-400 w-18">WhatsApp:</span>
+            <span className="text-white font-mono">{owner.whatsapp}</span>
+          </div>
+        </div>
+      </div>
+
       {/* Owner Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6 p-4 bg-zinc-800 rounded-xl border border-zinc-700">
         <div className="text-center">
@@ -629,44 +658,11 @@ const OwnerContact = ({ owner }) => {
           <div className="text-xs text-zinc-500">Response Time</div>
         </div>
       </div>
-
-      <div className="space-y-3 ">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-green-600 text-white py-3 rounded-xl font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2 shadow-lg"
-        >
-          <Phone className="w-4 h-4" />
-          Call Owner
-        </motion.button>
-
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-lg"
-        >
-          <Mail className="w-4 h-4" />
-          Send Email
-        </motion.button>
-
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-purple-600 text-white py-3 rounded-xl font-medium hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 shadow-lg"
-        >
-          <MessageCircle className="w-4 h-4" />
-          WhatsApp Chat
-        </motion.button>
-      </div>
-
-      <div className="mt-4 text-center">
-        <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
-          View Owner Profile
-        </button>
-      </div>
     </div>
   )
-}// Similar Rooms Component
+}
+
+// Similar Rooms Component
 const SimilarRooms = ({ currentRoomId, roomType }) => {
   const similarRooms = getSimilarRooms(currentRoomId, roomType)
 

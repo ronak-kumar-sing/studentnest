@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Settings, CheckCheck, Trash2, MessageCircle, Home, CreditCard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../../../contexts/NotificationContext';
 
 const DropdownMenu = ({ notifications, onClose }) => {
+  const navigate = useNavigate();
   const { markAsRead, markAllAsRead, clearAllNotifications } = useNotification();
 
   const recentNotifications = notifications.slice(0, 5);
@@ -27,6 +29,13 @@ const DropdownMenu = ({ notifications, onClose }) => {
   const handleNotificationClick = (notification) => {
     if (!notification.read) {
       markAsRead(notification.id);
+    }
+
+    // Navigate to messages page for message-type notifications
+    if (notification.type === 'message') {
+      navigate('/messages');
+      onClose();
+      return;
     }
 
     // Handle notification action

@@ -20,6 +20,9 @@ import {
   MessageSquare
 } from 'lucide-react'
 import { useDashboardStats } from '../../hooks/useDashboardStats'
+import ScheduleList from '../../components/dashboard/ScheduleList'
+import NotificationSection from '../../components/dashboard/NotificationSection'
+import MessageSection from '../../components/dashboard/MessageSection'
 
 const Dashboard = () => {
   const { stats, isLoading } = useDashboardStats()
@@ -47,7 +50,9 @@ const Dashboard = () => {
     { name: 'Post New Room', icon: Plus, href: '/dashboard/post-room', color: 'bg-blue-600' },
     { name: 'View Requests', icon: Calendar, href: '/dashboard/bookings', color: 'bg-green-600' },
     { name: 'Manage Payments', icon: CreditCard, href: '/dashboard/payments', color: 'bg-purple-600' },
-    { name: 'Modify Rooms', icon: Settings, href: '/dashboard/modifications', color: 'bg-orange-600' },
+    { name: 'View Schedules', icon: Clock, href: '/dashboard/schedules', color: 'bg-indigo-600' },
+    { name: 'Notifications', icon: Bell, href: '/dashboard/notifications', color: 'bg-red-600' },
+    { name: 'Messages', icon: MessageSquare, href: '/messages', color: 'bg-pink-600' },
   ]
 
   const statsCards = [
@@ -92,13 +97,30 @@ const Dashboard = () => {
               <p className="text-white/70 mt-1">Welcome back! Here's your property overview.</p>
             </div>
             <div className="flex items-center gap-4">
-              <div className="relative">
-                <Bell className="w-6 h-6 text-white/70 hover:text-white cursor-pointer" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-              </div>
+              <Link
+                to="/dashboard/notifications"
+                className="relative p-2 rounded-lg hover:bg-white/10 transition-colors"
+                title="Notifications"
+              >
+                <Bell className="w-6 h-6 text-white/70 hover:text-white" />
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-medium rounded-full flex items-center justify-center">
+                  3
+                </span>
+              </Link>
+              <Link
+                to="/messages"
+                className="relative p-2 rounded-lg hover:bg-white/10 transition-colors"
+                title="Messages"
+              >
+                <MessageSquare className="w-6 h-6 text-white/70 hover:text-white" />
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 text-white text-xs font-medium rounded-full flex items-center justify-center">
+                  6
+                </span>
+              </Link>
               <Link
                 to="/dashboard/settings"
                 className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                title="Settings"
               >
                 <Settings className="w-6 h-6 text-white/70" />
               </Link>
@@ -111,7 +133,7 @@ const Dashboard = () => {
         {/* Quick Actions */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {quickActions.map((action, index) => (
               <motion.div
                 key={action.name}
@@ -126,7 +148,7 @@ const Dashboard = () => {
                   <div className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                     <action.icon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-semibold text-white group-hover:text-white/90">
+                  <h3 className="font-semibold text-white group-hover:text-white/90 text-sm">
                     {action.name}
                   </h3>
                 </Link>
@@ -249,6 +271,39 @@ const Dashboard = () => {
             </div>
           </motion.div>
         </div>
+
+        {/* Communication Hub - Notifications and Messages */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Notifications Section */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.4 }}
+          >
+            <NotificationSection compact={true} maxItems={4} />
+          </motion.div>
+
+          {/* Messages Section */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 1.6 }}
+          >
+            <MessageSection compact={true} maxItems={4} />
+          </motion.div>
+        </div>
+
+        <div className='p-2 mt-2'>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="mb-8"
+          >
+            <ScheduleList compact={true} maxItems={3} />
+          </motion.div>
+        </div>
+        {/* Schedule List Section */}
       </div>
     </div>
   )

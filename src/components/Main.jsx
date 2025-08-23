@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Carousel from './Carousel/Carousel'
 import RoomCard from './room/RoomCard'
 import { SAMPLE_ROOMS, ROOM_TYPES, AMENITIES } from '../utils/sampleData'
-import ShinyText from './TextAnimations/ShinyText/ShinyText'
 
 function Main() {
   const [displayedRooms, setDisplayedRooms] = useState(SAMPLE_ROOMS.slice(0, 6));

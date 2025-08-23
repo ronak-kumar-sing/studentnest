@@ -33,7 +33,10 @@ export const SAMPLE_ROOMS = [
     owner: {
       name: "Rajesh Kumar",
       verified: true,
-      rating: 4.5
+      rating: 4.5,
+      email: "rajesh.kumar@gmail.com",
+      phone: "+91 98765 43210",
+      whatsapp: "+91 98765 43210"
     },
     features: {
       area: 150,
@@ -74,7 +77,10 @@ export const SAMPLE_ROOMS = [
     owner: {
       name: "Priya Sharma",
       verified: true,
-      rating: 4.8
+      rating: 4.8,
+      email: "priya.sharma@gmail.com",
+      phone: "+91 98234 56789",
+      whatsapp: "+91 98234 56789"
     },
     features: {
       area: 200,
@@ -116,7 +122,10 @@ export const SAMPLE_ROOMS = [
     owner: {
       name: "Amit Singh",
       verified: false,
-      rating: 4.2
+      rating: 4.2,
+      email: "amit.singh@gmail.com",
+      phone: "+91 99876 54321",
+      whatsapp: "+91 99876 54321"
     },
     features: {
       area: 300,
@@ -156,7 +165,10 @@ export const SAMPLE_ROOMS = [
     owner: {
       name: "Sunita Devi",
       verified: true,
-      rating: 4.1
+      rating: 4.1,
+      email: "sunita.devi@gmail.com",
+      phone: "+91 98111 22333",
+      whatsapp: "+91 98111 22333"
     },
     features: {
       area: 120,
@@ -199,7 +211,10 @@ export const SAMPLE_ROOMS = [
     owner: {
       name: "Dr. Meena Gupta",
       verified: true,
-      rating: 4.9
+      rating: 4.9,
+      email: "meena.gupta@gmail.com",
+      phone: "+91 98555 77888",
+      whatsapp: "+91 98555 77888"
     },
     features: {
       area: 250,
@@ -239,7 +254,10 @@ export const SAMPLE_ROOMS = [
     owner: {
       name: "Hostel Manager",
       verified: true,
-      rating: 4.2
+      rating: 4.2,
+      email: "hostel.manager@gmail.com",
+      phone: "+91 98999 11222",
+      whatsapp: "+91 98999 11222"
     },
     features: {
       area: 100,

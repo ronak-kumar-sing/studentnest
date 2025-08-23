@@ -8,11 +8,14 @@ import RoomDetails from './pages/RoomDetails'
 import BookingPage from './pages/BookingPage'
 import ScheduleVisitPage from './pages/ScheduleVisitPage'
 import SavedRoomsPage from './pages/SavedRoomsPage'
+import MessagesPage from './pages/MessagesPage'
 import Dashboard from './pages/dashboard/Dashboard'
 import PostRoom from './pages/dashboard/PostRoom'
 import BookingRequests from './pages/dashboard/BookingRequests'
 import Payments from './pages/dashboard/Payments'
 import RoomModification from './pages/dashboard/RoomModification'
+import SchedulesPage from './pages/dashboard/SchedulesPage'
+import NotificationsPage from './pages/dashboard/NotificationsPage'
 import Aurora from './Backgrounds/Aurora/Aurora'
 import { ChatProvider } from './contexts/ChatContext'
 import { NotificationProvider } from './contexts/NotificationContext'
@@ -57,6 +60,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/saved" element={<SavedRoomsPage />} />
+              <Route path="/messages" element={<MessagesPage />} />
               <Route path="/chat-demo" element={<ChatDemo />} />
               <Route path="/room/:id" element={<RoomDetails />} />
               <Route path="/room/:id/book" element={<BookingPage />} />
@@ -67,6 +71,8 @@ function App() {
               <Route path="/dashboard/post-room" element={<PostRoom />} />
               <Route path="/dashboard/bookings" element={<BookingRequests />} />
               <Route path="/dashboard/payments" element={<Payments />} />
+              <Route path="/dashboard/schedules" element={<SchedulesPage />} />
+              <Route path="/dashboard/notifications" element={<NotificationsPage />} />
               <Route path="/dashboard/modifications" element={<RoomModification />} />
             </Routes>
             {!shouldHideHeader && <Footer />}
