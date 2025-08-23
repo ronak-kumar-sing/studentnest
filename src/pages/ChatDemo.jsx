@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MessageCircle, Bell, Zap } from 'lucide-react';
-import { useNotifications } from '../contexts/NotificationContext';
+import { MessageCircle, Bell, Zap, Send, ArrowLeft } from 'lucide-react';
+import { useNotification } from '../contexts/NotificationContext';
 import { useToast } from '../hooks/useToast';
 import ChatButton from '../components/chat/ChatButton';
 
 const ChatDemo = () => {
-  const { addNotification, showToast: showNotificationToast } = useNotifications();
+  const { addNotification, showToast: showNotificationToast } = useNotification();
   const { showSuccess, showError, showInfo, showWarning } = useToast();
 
   // Demo: Add a notification every 10 seconds

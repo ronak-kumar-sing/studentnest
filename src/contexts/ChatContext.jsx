@@ -1,296 +1,32 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { socketService } from '../services/socket/socketService';
-import { useToast } from '../hooks/useToast';
 
-// Chat reducer
+// Minimal chat reducer - only basic state management
 const chatReducer = (state, action) => {
   switch (action.type) {
     case 'SET_LOADING':
       return { ...state, loading: action.payload };
-
-    case 'SET_ERROR':
-      return { ...state, error: action.payload, loading: false };
-
     case 'SET_CONVERSATIONS':
       return { ...state, conversations: action.payload, loading: false };
-
     case 'SET_ACTIVE_CHAT':
       return { ...state, activeChat: action.payload };
-
-    case 'ADD_MESSAGE':
-      return {
-        ...state,
-        messages: [...state.messages, action.payload],
-        conversations: state.conversations.map(conv =>
-          conv.id === action.payload.chatId
-            ? { ...conv, lastMessage: action.payload, updatedAt: action.payload.timestamp }
-            : conv
-        )
-      };
-
-    case 'UPDATE_MESSAGE':
-      return {
-        ...state,
-        messages: state.messages.map(msg =>
-          msg.id === action.payload.tempId
-            ? { ...action.payload.message }
-            : msg
-        )
-      };
-
-    case 'UPDATE_MESSAGE_STATUS':
-      return {
-        ...state,
-        messages: state.messages.map(msg =>
-          msg.id === action.payload.id
-            ? { ...msg, status: action.payload.status }
-            : msg
-        )
-      };
-
-    case 'SET_TYPING':
-      return { ...state, isTyping: action.payload };
-
-    case 'SET_USER_ONLINE':
-      return {
-        ...state,
-        onlineUsers: { ...state.onlineUsers, [action.payload]: true }
-      };
-
-    case 'SET_USER_OFFLINE':
-      return {
-        ...state,
-        onlineUsers: { ...state.onlineUsers, [action.payload]: false }
-      };
-
     case 'SET_MESSAGES':
-      return { ...state, messages: action.payload };
-
+      return { ...state, messages: { ...state.messages, [action.payload.chatId]: action.payload.messages } };
+    case 'SET_ERROR':
+      return { ...state, error: action.payload, loading: false };
     default:
       return state;
   }
 };
 
-// Initial state
-const initialChatState = {
+const initialState = {
   conversations: [],
-  messages: [],
   activeChat: null,
+  messages: {},
   loading: false,
-  error: null,
-  isTyping: null,
-  onlineUsers: {},
-  connectionStatus: 'disconnected'
+  error: null
 };
 
-// Create context
 const ChatContext = createContext();
-
-// Provider component
-export const ChatProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(chatReducer, initialChatState);
-  const { showToast } = useToast();
-
-  // Mock user for demonstration (in real app, get from AuthContext)
-  const user = {
-    id: 'user_123',
-    name: 'John Doe',
-    type: 'student'
-  };
-
-  useEffect(() => {
-    if (user?.id) {
-      // SOCKET DISABLED FOR CONTENT WORK
-      console.log('🚫 Socket functionality disabled for content work');
-      
-      // Load existing conversations
-      loadConversations();
-
-      // Skip socket setup - setupSocketListeners();
-    }
-
-    // Skip socket cleanup
-    return () => {
-      console.log('🚫 Socket cleanup skipped');
-    };
-  }, [user]);
-
-  const loadConversations = async () => {
-    try {
-      dispatch({ type: 'SET_LOADING', payload: true });
-
-      // Mock conversations data
-      const mockConversations = [
-        {
-          id: 'chat_1',
-          participants: ['user_123', 'owner_456'],
-          participantInfo: {
-            id: 'owner_456',
-            name: 'Property Owner',
-            avatar: 'https://ui-avatars.com/api/?name=Property+Owner&background=438ef7&color=fff'
-          },
-          lastMessage: {
-            content: 'Is the room still available?',
-            timestamp: new Date().toISOString(),
-            senderId: 'user_123'
-          },
-          unreadCount: 0,
-          updatedAt: new Date().toISOString()
-        }
-      ];
-
-      dispatch({ type: 'SET_CONVERSATIONS', payload: mockConversations });
-    } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: error.message });
-    }
-  };
-
-  const setupSocketListeners = () => {
-    // SOCKET LISTENERS DISABLED FOR CONTENT WORK
-    console.log('🚫 Socket listeners disabled for content work');
-    // All socket event listeners are disabled
-  };
-
-  const sendMessage = async (chatId, content, type = 'text') => {
-    const tempMessage = {
-      id: `temp-${Date.now()}`,
-      chatId,
-      senderId: user.id,
-      senderName: user.name,
-      content,
-      type,
-      timestamp: new Date().toISOString(),
-      status: 'sending'
-    };
-
-    // Optimistically add message to UI
-    dispatch({ type: 'ADD_MESSAGE', payload: tempMessage });
-
-    try {
-      // SOCKET DISABLED - Skip WebSocket send
-      console.log('🚫 Socket message send disabled for content work');
-      
-      // Simulate successful message send
-      const message = {
-        ...tempMessage,
-        id: `msg_${Date.now()}`,
-        status: 'sent'
-      };
-
-      // Update with simulated server response
-      dispatch({
-        type: 'UPDATE_MESSAGE',
-        payload: { tempId: tempMessage.id, message }
-      });
-
-    } catch (error) {
-      dispatch({
-        type: 'UPDATE_MESSAGE_STATUS',
-        payload: { id: tempMessage.id, status: 'failed' }
-      });
-      console.error('Failed to send message:', error);
-    }
-  };
-
-  const getRecipientId = (chatId) => {
-    const conversation = state.conversations.find(conv => conv.id === chatId);
-    return conversation?.participants.find(id => id !== user.id);
-  };
-
-  const startChat = async (recipientId, initialMessage = null) => {
-    try {
-      // Mock chat creation
-      const chat = {
-        id: `chat_${Date.now()}`,
-        participants: [user.id, recipientId],
-        participantInfo: {
-          id: recipientId,
-          name: 'New Contact',
-          avatar: 'https://ui-avatars.com/api/?name=New+Contact&background=438ef7&color=fff'
-        },
-        lastMessage: null,
-        unreadCount: 0,
-        updatedAt: new Date().toISOString()
-      };
-
-      dispatch({ type: 'SET_ACTIVE_CHAT', payload: chat });
-
-      if (initialMessage) {
-        await sendMessage(chat.id, initialMessage);
-      }
-
-      return chat;
-    } catch (error) {
-      console.error('Failed to start chat:', error);
-    }
-  };
-
-  const setActiveChat = (chatId) => {
-    const chat = state.conversations.find(conv => conv.id === chatId);
-    dispatch({ type: 'SET_ACTIVE_CHAT', payload: chat });
-
-    // Load messages for this chat
-    loadMessages(chatId);
-  };
-
-  const loadMessages = async (chatId) => {
-    try {
-      // Mock messages data
-      const mockMessages = [
-        {
-          id: 'msg_1',
-          chatId,
-          senderId: 'owner_456',
-          senderName: 'Property Owner',
-          content: 'Hello! Yes, the room is still available. Would you like to schedule a visit?',
-          type: 'text',
-          timestamp: new Date(Date.now() - 60000).toISOString(),
-          status: 'read'
-        },
-        {
-          id: 'msg_2',
-          chatId,
-          senderId: 'user_123',
-          senderName: 'John Doe',
-          content: 'That sounds great! When would be a good time?',
-          type: 'text',
-          timestamp: new Date(Date.now() - 30000).toISOString(),
-          status: 'delivered'
-        }
-      ];
-
-      dispatch({ type: 'SET_MESSAGES', payload: mockMessages });
-    } catch (error) {
-      console.error('Failed to load messages:', error);
-    }
-  };
-
-  const markMessageAsRead = (messageId) => {
-    // SOCKET DISABLED - Skip socket markAsRead call
-    console.log('🚫 Socket markAsRead disabled for content work');
-    
-    dispatch({
-      type: 'UPDATE_MESSAGE_STATUS',
-      payload: { id: messageId, status: 'read' }
-    });
-  };
-
-  const value = {
-    ...state,
-    sendMessage,
-    startChat,
-    markMessageAsRead,
-    setActiveChat,
-    loadConversations,
-    currentUser: user
-  };
-
-  return (
-    <ChatContext.Provider value={value}>
-      {children}
-    </ChatContext.Provider>
-  );
-};
 
 export const useChat = () => {
   const context = useContext(ChatContext);
@@ -298,4 +34,41 @@ export const useChat = () => {
     throw new Error('useChat must be used within a ChatProvider');
   }
   return context;
+};
+
+export const ChatProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(chatReducer, initialState);
+  
+  // Mock user for UI purposes
+  const user = { id: 'user_123', name: 'Current User' };
+
+  // Minimal useEffect - no operations to prevent RAM usage
+  useEffect(() => {
+    if (user?.id) {
+      // Just set empty state
+      dispatch({ type: 'SET_CONVERSATIONS', payload: [] });
+      dispatch({ type: 'SET_LOADING', payload: false });
+    }
+  }, [user?.id]);
+
+  // All functions return early - no operations
+  const sendMessage = () => false;
+  const startChat = () => null;
+  const setActiveChat = () => null;
+  const loadMessages = () => [];
+  const getRecipientId = () => null;
+  const markAsRead = () => false;
+
+  const value = {
+    ...state,
+    user,
+    sendMessage,
+    startChat,
+    setActiveChat,
+    loadMessages,
+    getRecipientId,
+    markAsRead
+  };
+
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };

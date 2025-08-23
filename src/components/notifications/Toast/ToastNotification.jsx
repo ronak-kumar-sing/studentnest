@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { X, CheckCircle, AlertTriangle, Info, AlertCircle, MessageCircle } from 'lucide-react';
-import { useNotifications } from '../../../contexts/NotificationContext';
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const ToastNotification = ({ toast }) => {
-  const { removeToast } = useNotifications();
+  const { removeToast } = useNotification();
 
   useEffect(() => {
     const timer = setTimeout(() => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
-import { useNotifications } from '../../../contexts/NotificationContext';
+import { useNotification } from '../../../contexts/NotificationContext';
 import ToastNotification from './ToastNotification';
 
 const ToastContainer = () => {
-  const { toasts } = useNotifications();
+  const { toasts } = useNotification();
 
   return createPortal(
     <div className="fixed top-4 right-4 z-[9999] space-y-2">

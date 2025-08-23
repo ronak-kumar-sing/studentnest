@@ -17,6 +17,7 @@ import Aurora from './Backgrounds/Aurora/Aurora'
 import { ChatProvider } from './contexts/ChatContext'
 import { NotificationProvider } from './contexts/NotificationContext'
 import ToastContainer from './components/notifications/Toast/ToastContainer'
+import DevStatusIndicator from './components/DevStatusIndicator'
 import ChatDemo from './pages/ChatDemo'
 
 function App() {
@@ -73,6 +74,9 @@ function App() {
 
           {/* Toast Notifications */}
           <ToastContainer />
+
+          {/* Development Status Indicator */}
+          <DevStatusIndicator />
         </div>
       </ChatProvider>
     </NotificationProvider>

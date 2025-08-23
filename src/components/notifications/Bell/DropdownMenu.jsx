@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Settings, CheckCheck, Trash2, MessageCircle, Home, CreditCard } from 'lucide-react';
-import { useNotifications } from '../../../contexts/NotificationContext';
+import { useNotification } from '../../../contexts/NotificationContext';
 
 const DropdownMenu = ({ notifications, onClose }) => {
-  const { markAsRead, markAllAsRead, clearNotifications } = useNotifications();
+  const { markAsRead, markAllAsRead, clearAllNotifications } = useNotification();
 
   const recentNotifications = notifications.slice(0, 5);
   const unreadNotifications = notifications.filter(n => !n.read);

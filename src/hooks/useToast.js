@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { useNotifications } from '../contexts/NotificationContext'
+import { useNotification } from '../contexts/NotificationContext'
 
 export const useToast = () => {
-  const { showToast: showNotificationToast } = useNotifications()
+  const { showToast: showNotificationToast } = useNotification()
 
   const showToast = useCallback((options) => {
     // Support both string message and object options

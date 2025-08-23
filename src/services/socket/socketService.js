@@ -5,7 +5,7 @@ class SocketService {
     this.socket = null;
     this.connectionStatus = 'disconnected';
     this.listeners = new Map();
-    
+
     // Log that socket is disabled
     console.log('🚫 Socket Service initialized in DISABLED mode for content work');
   }
@@ -18,7 +18,7 @@ class SocketService {
   }
 
   disconnect() {
-    // SOCKET DISABLED FOR CONTENT WORK  
+    // SOCKET DISABLED FOR CONTENT WORK
     console.log('🚫 Socket disconnect disabled for content work');
     this.connectionStatus = 'disconnected';
   }
@@ -104,7 +104,7 @@ class SocketService {
   async sendMessage({ chatId, recipientId, content, type = 'text' }) {
     // SOCKET DISABLED FOR CONTENT WORK
     console.log('🚫 Socket sendMessage disabled for content work');
-    
+
     // Return immediate mock response
     return {
       chatId,

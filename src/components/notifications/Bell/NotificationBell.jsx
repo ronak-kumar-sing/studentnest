@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, BellRing } from 'lucide-react';
-import { useNotifications } from '../../../contexts/NotificationContext';
+import { useNotification } from '../../../contexts/NotificationContext';
 import Badge from './Badge';
 import DropdownMenu from './DropdownMenu';
 
 const NotificationBell = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { unreadCount, notifications } = useNotifications();
+  const { unreadCount, notifications } = useNotification();
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
