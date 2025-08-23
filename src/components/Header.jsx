@@ -66,14 +66,23 @@ function Header() {
             </Link>
 
             {!isScrolled && (
-              <div className='font-medium border border-yellow-400/30 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 hover:from-yellow-500/20 hover:to-orange-500/20 transition-all duration-300'>
-                <ShinyText
-                  text="Add Your's"
-                  disabled={false}
-                  speed={5}
-                  className='cursor-pointer'
-                />
-              </div>
+              <>
+                <Link to="/dashboard" className='text-white font-medium relative group overflow-hidden py-2 px-3 rounded-full flex items-center gap-2'>
+                  <span className='relative z-10 transition-colors duration-300 group-hover:text-orange-300'>
+                    Dashboard
+                  </span>
+                  <div className='absolute inset-0 bg-gradient-to-r from-transparent via-orange-500/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out'></div>
+                </Link>
+
+                <div className='font-medium border border-yellow-400/30 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 hover:from-yellow-500/20 hover:to-orange-500/20 transition-all duration-300'>
+                  <ShinyText
+                    text="Add Your's"
+                    disabled={false}
+                    speed={5}
+                    className='cursor-pointer'
+                  />
+                </div>
+              </>
             )}
           </div>
 

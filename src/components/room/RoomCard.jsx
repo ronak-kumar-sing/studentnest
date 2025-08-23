@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, MapPin, Star, Users, Wifi, Car, Shield, Utensils, ArrowRight, Eye } from 'lucide-react';
+import { Heart, MapPin, Star, Users, ArrowRight, Eye } from 'lucide-react';
 import ShinyText from '../TextAnimations/ShinyText/ShinyText';
+import { AMENITIES_LIST } from '../../utils/constants';
 
 function RoomCard({
   room,
@@ -25,27 +26,41 @@ function RoomCard({
 
   // Get the first amenity icons to display with enhanced styling
   const getAmenityIcons = () => {
-    const iconMap = {
-      'wifi': { icon: <Wifi size={16} />, color: 'text-blue-300', bg: 'bg-blue-900/30' },
-      'parking': { icon: <Car size={16} />, color: 'text-green-300', bg: 'bg-green-900/30' },
-      'security': { icon: <Shield size={16} />, color: 'text-red-300', bg: 'bg-red-900/30' },
-      'kitchen': { icon: <Utensils size={16} />, color: 'text-orange-300', bg: 'bg-orange-900/30' },
-    };
+    // Color themes for different amenity types
+    const colorThemes = [
+      { color: 'text-blue-300', bg: 'bg-blue-900/30' },
+      { color: 'text-green-300', bg: 'bg-green-900/30' },
+      { color: 'text-red-300', bg: 'bg-red-900/30' },
+      { color: 'text-orange-300', bg: 'bg-orange-900/30' },
+      { color: 'text-purple-300', bg: 'bg-purple-900/30' },
+      { color: 'text-yellow-300', bg: 'bg-yellow-900/30' },
+    ];
 
-    return room.amenities?.slice(0, 4).map((amenity, index) => {
-      const amenityData = iconMap[amenity.toLowerCase()] || {
-        icon: <span key={amenity}>•</span>,
-        color: 'text-gray-300',
-        bg: 'bg-gray-800/50'
-      };
+    return room.amenities?.slice(0, 4).map((amenityId, index) => {
+      const amenity = AMENITIES_LIST[amenityId];
+      const theme = colorThemes[index % colorThemes.length];
+
+      if (!amenity) {
+        return (
+          <div
+            key={amenityId}
+            className="p-2 rounded-lg bg-gray-800/50 text-gray-300"
+            title={amenityId}
+          >
+            •
+          </div>
+        );
+      }
+
+      const IconComponent = amenity.icon;
 
       return (
         <div
-          key={amenity}
-          className={`p-2 rounded-lg ${amenityData.bg} ${amenityData.color} transition-all duration-200 hover:scale-110`}
-          title={amenity.charAt(0).toUpperCase() + amenity.slice(1)}
+          key={amenityId}
+          className={`p-2 rounded-lg ${theme.bg} ${theme.color} transition-all duration-200 hover:scale-110`}
+          title={amenity.name}
         >
-          {amenityData.icon}
+          <IconComponent size={16} />
         </div>
       );
     });

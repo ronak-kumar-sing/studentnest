@@ -18,10 +18,6 @@ import {
   BookmarkCheck,
   Users,
   Home as HomeIcon,
-  Car,
-  Wifi,
-  Shield,
-  ChefHat,
   Maximize,
   X,
   ArrowLeft,
@@ -29,6 +25,7 @@ import {
   Award,
   Zap
 } from 'lucide-react'
+import { AMENITIES_LIST, getAmenitiesByCategory } from '../utils/constants'
 import { SAMPLE_ROOMS } from '../utils/sampleData'
 import MapComponent from '../components/Map/MapComponent'
 import { formatCurrency, formatDistance, getTimeAgo, getInitials } from '../utils/roomHelpers'
@@ -52,14 +49,7 @@ const roomService = {
         "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80",
         "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80"
       ],
-      detailedAmenities: [
-        { id: 'wifi', name: 'High-Speed Wi-Fi', icon: 'wifi', available: true },
-        { id: 'parking', name: 'Parking Space', icon: 'car', available: room.amenities.includes('parking') },
-        { id: 'security', name: '24/7 Security', icon: 'shield', available: room.amenities.includes('security') },
-        { id: 'kitchen', name: 'Shared Kitchen', icon: 'chef-hat', available: room.amenities.includes('kitchen') },
-        { id: 'laundry', name: 'Laundry Service', icon: 'droplets', available: true },
-        { id: 'cleaning', name: 'Housekeeping', icon: 'sparkles', available: false }
-      ],
+      detailedAmenities: room.amenities || ['wifi', 'security', 'parking', 'kitchen'],
       location: {
         ...room.location,
         fullAddress: `${room.location.address}, New Delhi - 110007`,
@@ -449,37 +439,59 @@ const BookingPanel = ({ room }) => {
       </div>
     </div>
   )
-}// Amenities Component
+}// Amenities Component - Minimized Version
 const AmenitiesList = ({ amenities }) => {
-  const iconMap = {
-    wifi: Wifi,
-    car: Car,
-    shield: Shield,
-    'chef-hat': ChefHat
-  }
+  const [showAllAmenities, setShowAllAmenities] = useState(false)
+
+  // Get all amenities without categories for minimized display
+  const allAmenities = amenities.map(amenityId => {
+    const amenity = AMENITIES_LIST[amenityId]
+    return amenity ? { id: amenityId, ...amenity } : null
+  }).filter(Boolean)
+
+  // Show only first 8 amenities initially
+  const displayedAmenities = showAllAmenities ? allAmenities : allAmenities.slice(0, 8)
+  const hasMoreAmenities = allAmenities.length > 8
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-white">
-        <ShinyText text="Amenities" speed={3} className="text-xl font-semibold" />
-      </h3>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {amenities.map((amenity) => {
-          const IconComponent = iconMap[amenity.icon] || CheckCircle
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-semibold text-white">
+          <ShinyText text="Amenities & Facilities" speed={3} className="text-xl font-semibold" />
+        </h3>
+        <span className="text-sm text-blue-400 font-medium">
+          {allAmenities.length} facilities
+        </span>
+      </div>
+
+      {/* Compact amenities grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {displayedAmenities.map((amenity) => {
+          const IconComponent = amenity.icon
           return (
             <div
               key={amenity.id}
-              className={`flex items-center gap-3 p-3 rounded-lg border ${amenity.available
-                ? 'bg-green-900/50 border-green-700 text-green-400'
-                : 'bg-zinc-800 border-zinc-700 text-zinc-500'
-                }`}
+              className="flex items-center gap-2 p-3 rounded-lg bg-green-900/20 border border-green-700/30 text-green-300 hover:bg-green-900/30 transition-colors"
+              title={amenity.description}
             >
-              <IconComponent className="w-5 h-5" />
-              <span className="font-medium">{amenity.name}</span>
+              <IconComponent className="w-4 h-4 text-green-400 flex-shrink-0" />
+              <span className="font-medium text-sm truncate">{amenity.name}</span>
             </div>
           )
         })}
       </div>
+
+      {/* Show more/less button */}
+      {hasMoreAmenities && (
+        <div className="text-center">
+          <button
+            onClick={() => setShowAllAmenities(!showAllAmenities)}
+            className="text-blue-400 hover:text-blue-300 font-medium text-sm underline"
+          >
+            {showAllAmenities ? 'Show Less' : `Show ${allAmenities.length - 8} More Amenities`}
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -914,28 +926,6 @@ function RoomDetails() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-4"
             >
-              <h3 className="text-2xl font-semibold text-gray-900">About This Place</h3>
-              <p className="text-gray-700 leading-relaxed text-lg">{room.fullDescription}</p>
-
-              {/* Quick Highlights */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-blue-600">{room.features.area}</div>
-                  <div className="text-sm text-blue-600">sq ft Area</div>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <div className="text-2xl font-bold text-green-600">{room.rating}</div>
-                  <div className="text-sm text-green-600">Rating</div>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-xl">
-                  <div className="text-2xl font-bold text-purple-600">₹{Math.round(room.price / room.features.area)}</div>
-                  <div className="text-sm text-purple-600">Per sq ft</div>
-                </div>
-                <div className="text-center p-4 bg-orange-50 rounded-xl">
-                  <div className="text-2xl font-bold text-orange-600">{room.location.nearbyUniversities[0]?.distance || 'N/A'}</div>
-                  <div className="text-sm text-orange-600">km to Uni</div>
-                </div>
-              </div>
             </motion.div>
 
             {/* Amenities */}

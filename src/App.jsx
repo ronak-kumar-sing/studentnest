@@ -8,6 +8,10 @@ import RoomDetails from './pages/RoomDetails'
 import BookingPage from './pages/BookingPage'
 import ScheduleVisitPage from './pages/ScheduleVisitPage'
 import SavedRoomsPage from './pages/SavedRoomsPage'
+import Dashboard from './pages/dashboard/Dashboard'
+import PostRoom from './pages/dashboard/PostRoom'
+import BookingRequests from './pages/dashboard/BookingRequests'
+import Payments from './pages/dashboard/Payments'
 import Aurora from './Backgrounds/Aurora/Aurora'
 
 function App() {
@@ -17,7 +21,8 @@ function App() {
   const hideHeaderRoutes = [
     '/room/',
     '/book',
-    '/visit'
+    '/visit',
+    '/dashboard'
   ]
 
   // Check if current route should hide header
@@ -30,7 +35,7 @@ function App() {
       {/* Aurora Background - Fixed to viewport */}
       <div className='fixed inset-0 w-full h-full -z-10 bg-zinc-900'>
         <Aurora
-          colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
+          colorStops={["#438ef7", "#000000", "#000000"]}
           blend={0.5}
           amplitude={1.0}
           speed={0.5}
@@ -48,6 +53,12 @@ function App() {
           <Route path="/room/:id" element={<RoomDetails />} />
           <Route path="/room/:id/book" element={<BookingPage />} />
           <Route path="/room/:id/visit" element={<ScheduleVisitPage />} />
+
+          {/* Dashboard Routes */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/post-room" element={<PostRoom />} />
+          <Route path="/dashboard/bookings" element={<BookingRequests />} />
+          <Route path="/dashboard/payments" element={<Payments />} />
         </Routes>
         {!shouldHideHeader && <Footer />}
       </div>

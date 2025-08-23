@@ -19,7 +19,11 @@ export const SAMPLE_ROOMS = [
         { name: "Delhi University", distance: 2.5, commute: 15 }
       ]
     },
-    amenities: ["wifi", "parking", "security", "kitchen"],
+    amenities: [
+      "wifi", "parking", "security", "kitchen", "furnished-bed", "study-table",
+      "chair", "wardrobe", "ac", "attached-bathroom", "geyser", "study-desk",
+      "study-lighting", "cctv", "water-24x7", "power-backup", "laundry"
+    ],
     rating: 4.2,
     totalReviews: 18,
     availability: {
@@ -56,7 +60,11 @@ export const SAMPLE_ROOMS = [
         { name: "Delhi University South Campus", distance: 1.2, commute: 8 }
       ]
     },
-    amenities: ["wifi", "security", "kitchen"],
+    amenities: [
+      "wifi", "security", "kitchen", "furnished-bed", "study-table", "chair",
+      "wardrobe", "ac", "shared-bathroom", "geyser", "tv-lounge", "quiet-zones",
+      "cctv", "biometric", "water-24x7", "fire-safety", "mess", "common-area"
+    ],
     rating: 4.7,
     totalReviews: 25,
     availability: {
@@ -93,7 +101,12 @@ export const SAMPLE_ROOMS = [
         { name: "Jamia Millia Islamia", distance: 3.8, commute: 22 }
       ]
     },
-    amenities: ["wifi", "parking", "kitchen"],
+    amenities: [
+      "wifi", "parking", "kitchenette", "furnished-bed", "study-table", "chair",
+      "wardrobe", "ac", "attached-bathroom", "geyser", "gym", "swimming-pool",
+      "cafeteria", "coworking", "bike-parking", "security-staff", "cctv",
+      "smart-lock", "power-backup", "water-24x7"
+    ],
     rating: 4.5,
     totalReviews: 12,
     availability: {
@@ -129,7 +142,11 @@ export const SAMPLE_ROOMS = [
         { name: "Delhi University", distance: 4.2, commute: 25 }
       ]
     },
-    amenities: ["wifi", "security"],
+    amenities: [
+      "wifi", "security", "furnished-bed", "chair", "shared-bathroom", "mess",
+      "meal-plan", "tv-lounge", "study-lighting", "cctv", "water-24x7",
+      "laundry", "housekeeping"
+    ],
     rating: 3.8,
     totalReviews: 31,
     availability: {
@@ -166,7 +183,13 @@ export const SAMPLE_ROOMS = [
         { name: "JNU", distance: 5.2, commute: 28 }
       ]
     },
-    amenities: ["wifi", "parking", "security", "kitchen"],
+    amenities: [
+      "wifi", "parking", "security", "kitchen", "furnished-bed", "study-table",
+      "chair", "wardrobe", "ac", "attached-bathroom", "geyser", "gym",
+      "swimming-pool", "cafeteria", "coffee-machine", "coworking", "shuttle",
+      "bike-parking", "cctv", "biometric", "emergency-alarm", "security-staff",
+      "water-24x7", "power-backup", "waste-management", "fire-safety"
+    ],
     rating: 4.9,
     totalReviews: 8,
     availability: {
@@ -202,7 +225,11 @@ export const SAMPLE_ROOMS = [
         { name: "Delhi University", distance: 1.8, commute: 12 }
       ]
     },
-    amenities: ["wifi", "security"],
+    amenities: [
+      "wifi", "security", "furnished-bed", "chair", "shared-bathroom",
+      "mess", "meal-plan", "tv-lounge", "recreation", "common-area",
+      "study-lighting", "quiet-zones", "cctv", "water-24x7", "laundry"
+    ],
     rating: 4.0,
     totalReviews: 42,
     availability: {
