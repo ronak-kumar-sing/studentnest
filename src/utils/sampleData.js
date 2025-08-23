@@ -11,6 +11,7 @@ export const SAMPLE_ROOMS = [
       "https://images.unsplash.com/photo-1571624436279-b272aff752b5?auto=format&fit=crop&w=800&q=80"
     ],
     roomType: "single",
+    accommodationType: "room", // "room" or "pg"
     location: {
       address: "North Campus, Delhi",
       city: "Delhi",
@@ -31,12 +32,14 @@ export const SAMPLE_ROOMS = [
       availableFrom: "2025-09-01"
     },
     owner: {
+      id: "owner_001",
       name: "Rajesh Kumar",
       verified: true,
       rating: 4.5,
       email: "rajesh.kumar@gmail.com",
       phone: "+91 98765 43210",
-      whatsapp: "+91 98765 43210"
+      whatsapp: "+91 98765 43210",
+      responseRate: 92
     },
     features: {
       area: 150,
@@ -55,6 +58,7 @@ export const SAMPLE_ROOMS = [
       "https://images.unsplash.com/photo-1564078516393-cf04bd966897?auto=format&fit=crop&w=800&q=80"
     ],
     roomType: "shared",
+    accommodationType: "room", // "room" or "pg"
     location: {
       address: "South Campus Area, Delhi",
       city: "Delhi",
@@ -75,12 +79,14 @@ export const SAMPLE_ROOMS = [
       availableFrom: "2025-08-25"
     },
     owner: {
+      id: "owner_002",
       name: "Priya Sharma",
       verified: true,
       rating: 4.8,
       email: "priya.sharma@gmail.com",
       phone: "+91 98234 56789",
-      whatsapp: "+91 98234 56789"
+      whatsapp: "+91 98234 56789",
+      responseRate: 95
     },
     features: {
       area: 200,
@@ -99,6 +105,7 @@ export const SAMPLE_ROOMS = [
       "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=800&q=80"
     ],
     roomType: "studio",
+    accommodationType: "room", // "room" or "pg"
     location: {
       address: "Lajpat Nagar, Delhi",
       city: "Delhi",
@@ -120,12 +127,14 @@ export const SAMPLE_ROOMS = [
       availableFrom: "2025-09-15"
     },
     owner: {
+      id: "owner_003",
       name: "Amit Singh",
       verified: false,
       rating: 4.2,
       email: "amit.singh@gmail.com",
       phone: "+91 99876 54321",
-      whatsapp: "+91 99876 54321"
+      whatsapp: "+91 99876 54321",
+      responseRate: 88
     },
     features: {
       area: 300,
@@ -142,7 +151,8 @@ export const SAMPLE_ROOMS = [
     images: [
       "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80"
     ],
-    roomType: "pg",
+    roomType: "single",
+    accommodationType: "pg", // "room" or "pg"
     location: {
       address: "Mukherjee Nagar, Delhi",
       city: "Delhi",
@@ -163,12 +173,14 @@ export const SAMPLE_ROOMS = [
       availableFrom: "2025-08-20"
     },
     owner: {
+      id: "owner_004",
       name: "Sunita Devi",
       verified: true,
       rating: 4.1,
       email: "sunita.devi@gmail.com",
       phone: "+91 98111 22333",
-      whatsapp: "+91 98111 22333"
+      whatsapp: "+91 98111 22333",
+      responseRate: 87
     },
     features: {
       area: 120,
@@ -187,6 +199,7 @@ export const SAMPLE_ROOMS = [
       "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=800&q=80"
     ],
     roomType: "single",
+    accommodationType: "room", // "room" or "pg"
     location: {
       address: "Greater Kailash, Delhi",
       city: "Delhi",
@@ -209,12 +222,14 @@ export const SAMPLE_ROOMS = [
       availableFrom: "2025-08-30"
     },
     owner: {
+      id: "owner_005",
       name: "Dr. Meena Gupta",
       verified: true,
       rating: 4.9,
       email: "meena.gupta@gmail.com",
       phone: "+91 98555 77888",
-      whatsapp: "+91 98555 77888"
+      whatsapp: "+91 98555 77888",
+      responseRate: 96
     },
     features: {
       area: 250,
@@ -231,7 +246,8 @@ export const SAMPLE_ROOMS = [
     images: [
       "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=800&q=80"
     ],
-    roomType: "hostel",
+    roomType: "shared",
+    accommodationType: "pg", // "room" or "pg"
     location: {
       address: "Kamla Nagar, Delhi",
       city: "Delhi",
@@ -252,18 +268,78 @@ export const SAMPLE_ROOMS = [
       availableFrom: "2025-08-22"
     },
     owner: {
+      id: "owner_006",
       name: "Hostel Manager",
       verified: true,
       rating: 4.2,
       email: "hostel.manager@gmail.com",
       phone: "+91 98999 11222",
-      whatsapp: "+91 98999 11222"
+      whatsapp: "+91 98999 11222",
+      responseRate: 89
     },
     features: {
       area: 100,
       furnished: true,
       floor: 2,
       totalFloors: 4
+    }
+  },
+  {
+    id: "room-007",
+    title: "Premium PG with Food",
+    description: "Well-maintained PG accommodation with home-cooked meals, Wi-Fi, and all essential amenities for comfortable student living.",
+    price: 7500,
+    images: [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80"
+    ],
+    roomType: "single",
+    accommodationType: "pg", // "room" or "pg"
+    location: {
+      address: "Laxmi Nagar, Delhi",
+      city: "Delhi",
+      coordinates: { lat: 28.6345, lng: 77.2775 },
+      nearbyUniversities: [
+        { name: "Delhi University", distance: 2.8, commute: 18 }
+      ]
+    },
+    amenities: [
+      "wifi", "security", "furnished-bed", "study-table", "chair", "wardrobe",
+      "shared-bathroom", "mess", "meal-plan", "tv-lounge", "study-lighting",
+      "cctv", "water-24x7", "laundry", "housekeeping", "common-area", "fridge"
+    ],
+    rating: 4.3,
+    totalReviews: 29,
+    availability: {
+      isAvailable: true,
+      availableFrom: "2025-09-01"
+    },
+    owner: {
+      id: "owner_007",
+      name: "Ravi Sharma",
+      verified: true,
+      rating: 4.4,
+      email: "ravi.sharma@gmail.com",
+      phone: "+91 98765 00111",
+      whatsapp: "+91 98765 00111",
+      responseRate: 91
+    },
+    features: {
+      area: 130,
+      furnished: true,
+      floor: 1,
+      totalFloors: 3,
+      meals: true, // PG specific feature
+      mealTimes: ["breakfast", "lunch", "dinner"], // PG specific
+      pgRules: {
+        guestPolicy: "Guests allowed until 8 PM",
+        quietHours: "10 PM - 6 AM",
+        mealTimings: {
+          breakfast: "7:00 AM - 9:00 AM",
+          lunch: "12:00 PM - 2:00 PM",
+          dinner: "7:00 PM - 9:00 PM"
+        }
+      }
     }
   }
 ];
@@ -272,10 +348,22 @@ export const SAMPLE_ROOMS = [
 export const ROOM_TYPES = {
   single: "Single Room",
   shared: "Shared Room",
-  pg: "PG Room",
-  hostel: "Hostel Room",
-  apartment: "Apartment",
   studio: "Studio Apartment"
+};
+
+// Accommodation types
+export const ACCOMMODATION_TYPES = {
+  room: "Room",
+  pg: "PG"
+};
+
+// Combined display types
+export const DISPLAY_TYPES = {
+  "room-single": "Single Room",
+  "room-shared": "Shared Room",
+  "room-studio": "Studio Room",
+  "pg-single": "PG Single",
+  "pg-shared": "PG Shared"
 };
 
 // Common amenities

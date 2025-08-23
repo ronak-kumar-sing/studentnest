@@ -23,7 +23,9 @@ import {
   ArrowLeft,
   Clock,
   Award,
-  Zap
+  Zap,
+  DollarSign,
+  Send
 } from 'lucide-react'
 import { AMENITIES_LIST, getAmenitiesByCategory } from '../utils/constants'
 import { SAMPLE_ROOMS } from '../utils/sampleData'
@@ -32,6 +34,7 @@ import { formatCurrency, formatDistance, getTimeAgo, getInitials } from '../util
 import ShinyText from '../components/TextAnimations/ShinyText/ShinyText'
 import { useSavedRooms } from '../contexts/SavedRoomsContext'
 import { useToast } from '../components/Toast'
+import { useChat } from '../contexts/ChatContext'
 
 // Mock API service
 const roomService = {
@@ -314,133 +317,315 @@ const ImageGallery = ({ images, title }) => {
   )
 }
 
+// Price Negotiation Modal Component
+const PriceNegotiationModal = ({ room, isOpen, onClose }) => {
+  const [proposedPrice, setProposedPrice] = useState('')
+  const [message, setMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { startChat, sendMessage } = useChat()
+  const { showToast } = useToast()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!proposedPrice || !message.trim()) {
+      showToast('Please fill in all required fields', 'error')
+      return
+    }
+
+    const proposedPriceNum = parseInt(proposedPrice)
+    if (isNaN(proposedPriceNum) || proposedPriceNum <= 0) {
+      showToast('Please enter a valid price', 'error')
+      return
+    }
+
+    if (proposedPriceNum >= room.price) {
+      showToast('Proposed price should be less than the current price', 'error')
+      return
+    }
+
+    if (proposedPriceNum < room.price * 0.5) {
+      showToast('Proposed price seems too low. Please consider a reasonable offer.', 'error')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      // Create the negotiation message
+      const negotiationMessage = `Hi! I'm interested in your property "${room.title}". I would like to negotiate the price from ₹${room.price.toLocaleString()} to ₹${proposedPriceNum.toLocaleString()}/month.
+
+My message: ${message}
+
+Please let me know if this works for you. Looking forward to your response!`
+
+      // Start chat with owner and send the negotiation message
+      const chat = await startChat(room.owner.id || 'owner_456', negotiationMessage)
+
+      if (chat) {
+        showToast('Price negotiation request sent to room owner successfully!', 'success')
+        onClose()
+        // Reset form
+        setProposedPrice('')
+        setMessage('')
+      } else {
+        showToast('Failed to send negotiation request. Please try again.', 'error')
+      }
+    } catch (error) {
+      console.error('Error sending negotiation request:', error)
+      showToast('Failed to send negotiation request. Please try again.', 'error')
+    }
+
+    setIsSubmitting(false)
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className="bg-zinc-900 rounded-2xl p-6 max-w-md w-full border border-zinc-700 shadow-2xl"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+            <DollarSign className="w-5 h-5 text-green-400" />
+            Negotiate Price
+          </h3>
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5 text-zinc-400" />
+          </button>
+        </div>
+
+        <div className="mb-4">
+          <div className="text-sm text-zinc-400 mb-2">Current Price</div>
+          <div className="text-2xl font-bold text-white">₹{room.price.toLocaleString()}<span className="text-base text-zinc-400">/month</span></div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-white mb-2">
+              Your Proposed Price *
+            </label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400">₹</span>
+              <input
+                type="number"
+                value={proposedPrice}
+                onChange={(e) => setProposedPrice(e.target.value)}
+                placeholder="Enter your price"
+                max={room.price - 1}
+                min="1000"
+                className="w-full pl-8 pr-4 py-3 border border-zinc-700 bg-zinc-800 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                required
+              />
+            </div>
+            <div className="flex justify-between items-center text-xs mt-1">
+              <span className="text-zinc-500">Must be less than ₹{room.price.toLocaleString()}</span>
+              {proposedPrice && !isNaN(parseInt(proposedPrice)) && parseInt(proposedPrice) < room.price && (
+                <span className="text-green-400 font-medium">
+                  {Math.round(((room.price - parseInt(proposedPrice)) / room.price) * 100)}% off
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-white mb-2">
+              Message to Owner *
+            </label>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Explain why you're proposing this price..."
+              rows={4}
+              className="w-full px-4 py-3 border border-zinc-700 bg-zinc-800 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+              required
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-4 py-3 border border-zinc-600 text-zinc-300 rounded-xl hover:bg-zinc-800 transition-all font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-blue-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              {isSubmitting ? (
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Send Request
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </motion.div>
+    </div>
+  )
+}
+
 // Booking Panel Component
 const BookingPanel = ({ room }) => {
   const [selectedDate, setSelectedDate] = useState('')
+  const [showNegotiationModal, setShowNegotiationModal] = useState(false)
   const { id } = useParams()
   const navigate = useNavigate()
   const { toggleSaveRoom, isRoomSaved } = useSavedRooms()
 
   return (
-    <div className="bg-zinc-900 rounded-2xl p-6 shadow-xl border border-zinc-800 ">
-      <div className="flex items-baseline justify-between mb-4">
-        <div className="text-3xl font-bold text-white">
-          ₹{room.price.toLocaleString()}<span className="text-lg font-normal text-zinc-400">/month</span>
-        </div>
-        <div className="text-right">
-          <div className="text-sm text-zinc-500">Best Price</div>
-          <div className="text-green-400 font-medium text-sm flex items-center gap-1">
-            <Zap className="w-3 h-3" />
-            <ShinyText text="Great Deal" speed={3} className="text-sm" />
+    <>
+      <div className="bg-zinc-900 rounded-2xl p-6 shadow-xl border border-zinc-800 ">
+        <div className="flex items-baseline justify-between mb-4">
+          <div className="text-3xl font-bold text-white">
+            ₹{room.price.toLocaleString()}<span className="text-lg font-normal text-zinc-400">/month</span>
+          </div>
+          <div className="text-right">
+            <div className="text-sm text-zinc-500">Best Price</div>
+            <div className="text-green-400 font-medium text-sm flex items-center gap-1">
+              <Zap className="w-3 h-3" />
+              <ShinyText text="Great Deal" speed={3} className="text-sm" />
+            </div>
           </div>
         </div>
+
+        <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-1">
+            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            <span className="font-semibold text-white">{room.rating}</span>
+          </div>
+          <span className="text-zinc-500">•</span>
+          <span className="text-zinc-400">{room.totalReviews} reviews</span>
+          <span className="text-zinc-500">•</span>
+          <div className="flex items-center gap-1 text-green-400">
+            <CheckCircle className="w-4 h-4" />
+            <span className="text-sm font-medium">Verified</span>
+          </div>
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-white mb-2">
+              Move-in Date
+            </label>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              min={room.availability.availableFrom}
+              className="w-full px-4 py-3 border border-zinc-700 bg-zinc-800 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-3 mb-6">
+          <motion.button
+            onClick={() => navigate(`/room/${id}/book`)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl"
+          >
+            Book Now - Pay Later
+          </motion.button>
+
+          <motion.button
+            onClick={() => setShowNegotiationModal(true)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-4 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+          >
+            <DollarSign className="w-4 h-4" />
+            <ShinyText text="Negotiate Price" speed={3} className="text-base" />
+          </motion.button>
+
+          <motion.button
+            onClick={() => navigate(`/room/${id}/visit`)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-zinc-800 text-white py-4 rounded-xl font-semibold hover:bg-zinc-700 transition-all border border-zinc-700 flex items-center justify-center gap-2"
+          >
+            <Calendar className="w-4 h-4" />
+            <ShinyText text="Schedule Visit" speed={3} className="text-base" />
+          </motion.button>
+
+          <motion.button
+            onClick={() => toggleSaveRoom(room)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full border py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${isRoomSaved(id)
+              ? 'border-blue-500 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20'
+              : 'border-zinc-600 text-zinc-300 hover:bg-zinc-800'
+              }`}
+          >
+            {isRoomSaved(id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+            {isRoomSaved(id) ? 'Saved' : 'Save for Later'}
+          </motion.button>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-zinc-800 rounded-xl border border-zinc-700">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-400">{room.features.area}</div>
+            <div className="text-xs text-zinc-500">sq ft</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-400">{room.owner.responseRate}%</div>
+            <div className="text-xs text-zinc-500">Response</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-purple-400">{room.reviews.length}</div>
+            <div className="text-xs text-zinc-500">Reviews</div>
+          </div>
+        </div>
+
+        {/* Cost Breakdown */}
+        <div className="border-t border-zinc-700 pt-4 space-y-3 text-sm">
+          <div className="flex justify-between items-center">
+            <span className="text-zinc-400">Monthly Rent</span>
+            <span className="font-medium text-white">₹{room.price.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-zinc-400">Security Deposit</span>
+            <span className="font-medium text-white">₹{(room.price * 2).toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between items-center text-green-400">
+            <span>Maintenance</span>
+            <span className="font-medium">Included</span>
+          </div>
+          <div className="flex justify-between items-center font-semibold pt-3 border-t border-zinc-700 text-lg">
+            <span className="text-white">Total Initial Cost</span>
+            <span className="text-blue-400">₹{(room.price * 3).toLocaleString()}</span>
+          </div>
+        </div>
+
+        <div className="mt-4 text-xs text-zinc-500 text-center">
+          No booking fees • Cancel anytime
+        </div>
       </div>
 
-      <div className="flex items-center gap-2 mb-6">
-        <div className="flex items-center gap-1">
-          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-          <span className="font-semibold text-white">{room.rating}</span>
-        </div>
-        <span className="text-zinc-500">•</span>
-        <span className="text-zinc-400">{room.totalReviews} reviews</span>
-        <span className="text-zinc-500">•</span>
-        <div className="flex items-center gap-1 text-green-400">
-          <CheckCircle className="w-4 h-4" />
-          <span className="text-sm font-medium">Verified</span>
-        </div>
-      </div>
-
-      <div className="space-y-4 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-white mb-2">
-            Move-in Date
-          </label>
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            min={room.availability.availableFrom}
-            className="w-full px-4 py-3 border border-zinc-700 bg-zinc-800 text-white rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-3 mb-6">
-        <motion.button
-          onClick={() => navigate(`/room/${id}/book`)}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg hover:shadow-xl"
-        >
-          Book Now - Pay Later
-        </motion.button>
-
-        <motion.button
-          onClick={() => navigate(`/room/${id}/visit`)}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full bg-zinc-800 text-white py-4 rounded-xl font-semibold hover:bg-zinc-700 transition-all border border-zinc-700 flex items-center justify-center gap-2"
-        >
-          <Calendar className="w-4 h-4" />
-          <ShinyText text="Schedule Visit" speed={3} className="text-base" />
-        </motion.button>
-
-        <motion.button
-          onClick={() => toggleSaveRoom(room)}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className={`w-full border py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${isRoomSaved(id)
-            ? 'border-blue-500 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20'
-            : 'border-zinc-600 text-zinc-300 hover:bg-zinc-800'
-            }`}
-        >
-          {isRoomSaved(id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
-          {isRoomSaved(id) ? 'Saved' : 'Save for Later'}
-        </motion.button>
-      </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-zinc-800 rounded-xl border border-zinc-700">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-blue-400">{room.features.area}</div>
-          <div className="text-xs text-zinc-500">sq ft</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-green-400">{room.owner.responseRate}%</div>
-          <div className="text-xs text-zinc-500">Response</div>
-        </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-purple-400">{room.reviews.length}</div>
-          <div className="text-xs text-zinc-500">Reviews</div>
-        </div>
-      </div>
-
-      {/* Cost Breakdown */}
-      <div className="border-t border-zinc-700 pt-4 space-y-3 text-sm">
-        <div className="flex justify-between items-center">
-          <span className="text-zinc-400">Monthly Rent</span>
-          <span className="font-medium text-white">₹{room.price.toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-zinc-400">Security Deposit</span>
-          <span className="font-medium text-white">₹{(room.price * 2).toLocaleString()}</span>
-        </div>
-        <div className="flex justify-between items-center text-green-400">
-          <span>Maintenance</span>
-          <span className="font-medium">Included</span>
-        </div>
-        <div className="flex justify-between items-center font-semibold pt-3 border-t border-zinc-700 text-lg">
-          <span className="text-white">Total Initial Cost</span>
-          <span className="text-blue-400">₹{(room.price * 3).toLocaleString()}</span>
-        </div>
-      </div>
-
-      <div className="mt-4 text-xs text-zinc-500 text-center">
-        No booking fees • Cancel anytime
-      </div>
-    </div>
+      {/* Price Negotiation Modal */}
+      <PriceNegotiationModal
+        room={room}
+        isOpen={showNegotiationModal}
+        onClose={() => setShowNegotiationModal(false)}
+      />
+    </>
   )
-}// Amenities Component - Minimized Version
+}
+
+// Amenities Component - Minimized Version
 const AmenitiesList = ({ amenities }) => {
   const [showAllAmenities, setShowAllAmenities] = useState(false)
 
@@ -855,9 +1040,19 @@ function RoomDetails() {
                   <span className="font-semibold text-yellow-400">{room.rating}</span>
                   <span className="text-zinc-400">({room.totalReviews} reviews)</span>
                 </div>
-                <span className="px-3 py-1 bg-blue-900/50 text-blue-400 text-sm rounded-full capitalize font-medium border border-blue-700">
-                  {room.roomType} Room
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 bg-blue-900/50 text-blue-400 text-sm rounded-full capitalize font-medium border border-blue-700">
+                    {room.roomType} Room
+                  </span>
+                  {room.accommodationType && (
+                    <span className={`px-3 py-1 text-sm rounded-full font-medium border ${room.accommodationType === 'pg'
+                        ? 'bg-green-900/50 text-green-400 border-green-700'
+                        : 'bg-purple-900/50 text-purple-400 border-purple-700'
+                      }`}>
+                      {room.accommodationType === 'pg' ? 'PG Accommodation' : 'Private Room'}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-400">
@@ -883,6 +1078,56 @@ function RoomDetails() {
                 )}
               </div>
             </motion.div>
+
+            {/* PG-specific Information */}
+            {room.accommodationType === 'pg' && room.features.meals && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="space-y-4"
+              >
+                <h3 className="text-2xl font-semibold text-white flex items-center gap-2">
+                  🍽️ PG Facilities & Meal Information
+                </h3>
+                <div className="bg-green-900/20 border border-green-700 rounded-xl p-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-lg font-semibold text-green-400 mb-3">Meal Timings</h4>
+                      <div className="space-y-2">
+                        {room.features.pgRules?.mealTimings && Object.entries(room.features.pgRules.mealTimings).map(([meal, time]) => (
+                          <div key={meal} className="flex justify-between items-center">
+                            <span className="text-zinc-300 capitalize">{meal}</span>
+                            <span className="text-green-400 font-medium">{time}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-green-400 mb-3">PG Rules & Policies</h4>
+                      <div className="space-y-2 text-sm">
+                        {room.features.pgRules?.guestPolicy && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-zinc-500">•</span>
+                            <span className="text-zinc-300">{room.features.pgRules.guestPolicy}</span>
+                          </div>
+                        )}
+                        {room.features.pgRules?.quietHours && (
+                          <div className="flex items-start gap-2">
+                            <span className="text-zinc-500">•</span>
+                            <span className="text-zinc-300">Quiet Hours: {room.features.pgRules.quietHours}</span>
+                          </div>
+                        )}
+                        <div className="flex items-start gap-2">
+                          <span className="text-zinc-500">•</span>
+                          <span className="text-zinc-300">Meals included in rent</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
             {/* Description */}
             <motion.div
@@ -915,13 +1160,6 @@ function RoomDetails() {
                   <div className="text-sm text-orange-300">km to Uni</div>
                 </div>
               </div>
-            </motion.div>            {/* Description */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-4"
-            >
             </motion.div>
 
             {/* Amenities */}

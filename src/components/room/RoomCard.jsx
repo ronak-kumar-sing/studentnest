@@ -87,9 +87,19 @@ function RoomCard({
             {/* Content Section */}
             <div className="flex-1 min-w-0">
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-semibold text-base truncate text-white group-hover:text-blue-400 transition-colors">
-                  {room.title}
-                </h3>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-base truncate text-white group-hover:text-blue-400 transition-colors">
+                    {room.title}
+                  </h3>
+                  {room.accommodationType && (
+                    <div className={`inline-block px-2 py-1 rounded-md text-xs font-medium mt-1 ${room.accommodationType === 'pg'
+                        ? 'bg-green-600/20 text-green-400'
+                        : 'bg-blue-600/20 text-blue-400'
+                      }`}>
+                      {room.accommodationType === 'pg' ? 'PG' : 'Room'} • {room.roomType}
+                    </div>
+                  )}
+                </div>
                 <div className="text-right ml-2">
                   <span className="text-lg font-bold">
                     <ShinyText
@@ -211,9 +221,19 @@ function RoomCard({
                   <span className="text-amber-400 text-sm">({room.totalReviews} reviews)</span>
                 </div>
               )}
-              <div className="flex items-center bg-gray-700/50 px-3 py-2 rounded-xl">
-                <Users size={16} className="text-gray-400 mr-2" />
-                <span className="text-gray-200 text-sm font-medium capitalize">{room.roomType}</span>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center bg-gray-700/50 px-3 py-2 rounded-xl">
+                  <Users size={16} className="text-gray-400 mr-2" />
+                  <span className="text-gray-200 text-sm font-medium capitalize">{room.roomType}</span>
+                </div>
+                {room.accommodationType && (
+                  <div className={`px-3 py-2 rounded-xl text-sm font-medium ${room.accommodationType === 'pg'
+                      ? 'bg-green-600/20 text-green-400 border border-green-600/30'
+                      : 'bg-blue-600/20 text-blue-400 border border-blue-600/30'
+                    }`}>
+                    {room.accommodationType === 'pg' ? 'PG' : 'Room'}
+                  </div>
+                )}
               </div>
             </div>
 

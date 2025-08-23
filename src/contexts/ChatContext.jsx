@@ -51,10 +51,37 @@ export const ChatProvider = ({ children }) => {
     }
   }, [user?.id]);
 
-  // All functions return early - no operations
-  const sendMessage = () => false;
-  const startChat = () => null;
-  const setActiveChat = () => null;
+  // Functions with minimal implementation
+  const sendMessage = (chatId, content, type = 'text') => {
+    console.log('Sending message:', { chatId, content, type });
+    return true;
+  };
+
+  const startChat = async (recipientId, initialMessage = null) => {
+    console.log('Starting chat with:', recipientId, 'Message:', initialMessage);
+
+    // Create mock chat
+    const chat = {
+      id: `chat_${Date.now()}`,
+      participants: [user.id, recipientId],
+      participantInfo: {
+        id: recipientId,
+        name: 'Room Owner',
+        avatar: 'https://ui-avatars.com/api/?name=Room+Owner&background=438ef7&color=fff'
+      },
+      lastMessage: initialMessage ? {
+        content: initialMessage,
+        timestamp: new Date().toISOString()
+      } : null,
+      unreadCount: 0,
+      updatedAt: new Date().toISOString()
+    };
+
+    return chat;
+  };
+  const setActiveChat = (chat) => {
+    dispatch({ type: 'SET_ACTIVE_CHAT', payload: chat });
+  };
   const loadMessages = () => [];
   const getRecipientId = () => null;
   const markAsRead = () => false;

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import ImageUpload from '../../components/dashboard/ImageUpload'
 import { getAmenitiesByCategory } from '../../utils/constants'
+import { ACCOMMODATION_TYPES } from '../../utils/sampleData'
 
 const PostRoom = () => {
   const navigate = useNavigate()
@@ -23,6 +24,7 @@ const PostRoom = () => {
     title: '',
     description: '',
     roomType: '',
+    accommodationType: '', // New field for room/pg
     size: '',
 
     // Location
@@ -52,14 +54,42 @@ const PostRoom = () => {
     floor: '',
     totalFloors: '',
     roomRules: '',
-    additionalNotes: ''
+    additionalNotes: '',
+
+    // PG-specific fields
+    mealsIncluded: false,
+    mealTimings: {
+      breakfast: '',
+      lunch: '',
+      dinner: ''
+    },
+    pgRules: {
+      guestPolicy: '',
+      quietHours: ''
+    }
   })
 
   const roomTypes = [
     { id: 'single', name: 'Single Room', icon: Home },
-    { id: 'double', name: 'Double Room', icon: Users },
     { id: 'shared', name: 'Shared Room', icon: Users },
     { id: 'studio', name: 'Studio Apartment', icon: Home }
+  ]
+
+  const accommodationTypes = [
+    {
+      id: 'room',
+      name: 'Private Room',
+      description: 'Independent room with own entrance',
+      icon: Home,
+      color: 'blue'
+    },
+    {
+      id: 'pg',
+      name: 'PG (Paying Guest)',
+      description: 'Room with shared facilities and meals',
+      icon: Users,
+      color: 'green'
+    }
   ]
 
   // Get all amenities organized by category
@@ -220,9 +250,50 @@ const PostRoom = () => {
 
               <div>
                 <label className="block text-sm font-medium text-white mb-4">
+                  Accommodation Type *
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  {accommodationTypes.map((type) => (
+                    <div
+                      key={type.id}
+                      onClick={() => handleInputChange('accommodationType', type.id)}
+                      className={`p-6 border-2 rounded-xl cursor-pointer transition-all ${formData.accommodationType === type.id
+                          ? type.color === 'green'
+                            ? 'border-green-400 bg-green-500/20 backdrop-blur-sm'
+                            : 'border-blue-400 bg-blue-500/20 backdrop-blur-sm'
+                          : 'border-white/30 bg-white/10 backdrop-blur-sm hover:border-white/50'
+                        }`}
+                    >
+                      <div className="flex items-start space-x-4">
+                        <type.icon className={`w-8 h-8 mt-1 ${formData.accommodationType === type.id
+                            ? type.color === 'green' ? 'text-green-300' : 'text-blue-300'
+                            : 'text-white/70'
+                          }`} />
+                        <div className="flex-1">
+                          <h3 className={`text-lg font-semibold mb-2 ${formData.accommodationType === type.id
+                              ? type.color === 'green' ? 'text-green-300' : 'text-blue-300'
+                              : 'text-white'
+                            }`}>
+                            {type.name}
+                          </h3>
+                          <p className={`text-sm ${formData.accommodationType === type.id
+                              ? type.color === 'green' ? 'text-green-200' : 'text-blue-200'
+                              : 'text-white/70'
+                            }`}>
+                            {type.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white mb-4">
                   Room Type *
                 </label>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {roomTypes.map((type) => (
                     <div
                       key={type.id}
@@ -579,6 +650,108 @@ const PostRoom = () => {
                   placeholder="e.g., No smoking, No parties, Visitors allowed till 9 PM..."
                 />
               </div>
+
+              {/* PG-specific fields */}
+              {formData.accommodationType === 'pg' && (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 space-y-6">
+                  <h3 className="text-lg font-semibold text-green-300 mb-4">PG-Specific Details</h3>
+
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      id="mealsIncluded"
+                      checked={formData.mealsIncluded}
+                      onChange={(e) => handleInputChange('mealsIncluded', e.target.checked)}
+                      className="w-5 h-5 text-green-600 bg-white/20 border border-white/30 rounded focus:ring-green-500 focus:ring-2"
+                    />
+                    <label htmlFor="mealsIncluded" className="text-white font-medium">
+                      Meals Included
+                    </label>
+                  </div>
+
+                  {formData.mealsIncluded && (
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-4">
+                        Meal Timings
+                      </label>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-xs text-white/70 mb-1">Breakfast</label>
+                          <input
+                            type="text"
+                            value={formData.mealTimings.breakfast}
+                            onChange={(e) => handleInputChange('mealTimings', {
+                              ...formData.mealTimings,
+                              breakfast: e.target.value
+                            })}
+                            className="w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white placeholder-white/60"
+                            placeholder="e.g., 7:00 AM - 9:00 AM"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-white/70 mb-1">Lunch</label>
+                          <input
+                            type="text"
+                            value={formData.mealTimings.lunch}
+                            onChange={(e) => handleInputChange('mealTimings', {
+                              ...formData.mealTimings,
+                              lunch: e.target.value
+                            })}
+                            className="w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white placeholder-white/60"
+                            placeholder="e.g., 12:00 PM - 2:00 PM"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs text-white/70 mb-1">Dinner</label>
+                          <input
+                            type="text"
+                            value={formData.mealTimings.dinner}
+                            onChange={(e) => handleInputChange('mealTimings', {
+                              ...formData.mealTimings,
+                              dinner: e.target.value
+                            })}
+                            className="w-full px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white placeholder-white/60"
+                            placeholder="e.g., 7:00 PM - 9:00 PM"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Guest Policy
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.pgRules.guestPolicy}
+                        onChange={(e) => handleInputChange('pgRules', {
+                          ...formData.pgRules,
+                          guestPolicy: e.target.value
+                        })}
+                        className="w-full px-4 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white placeholder-white/60"
+                        placeholder="e.g., Guests allowed until 8 PM"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Quiet Hours
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.pgRules.quietHours}
+                        onChange={(e) => handleInputChange('pgRules', {
+                          ...formData.pgRules,
+                          quietHours: e.target.value
+                        })}
+                        className="w-full px-4 py-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 text-white placeholder-white/60"
+                        placeholder="e.g., 10 PM - 6 AM"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-white mb-2">

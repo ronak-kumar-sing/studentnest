@@ -161,7 +161,7 @@ const MessageSection = ({ compact = false, maxItems = 5 }) => {
     })
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
 
-  const displayConversations = compact 
+  const displayConversations = compact
     ? filteredConversations.slice(0, maxItems)
     : filteredConversations
 
@@ -197,7 +197,7 @@ const MessageSection = ({ compact = false, maxItems = 5 }) => {
             {compact ? 'Recent Messages' : 'Messages'}
           </h3>
           <p className="text-sm text-white/70 mt-1">
-            {compact 
+            {compact
               ? `${totalUnread} unread messages from ${conversations.length} conversations`
               : 'Manage your property-related conversations'
             }
@@ -237,19 +237,20 @@ const MessageSection = ({ compact = false, maxItems = 5 }) => {
             {[
               { key: 'all', label: 'All', count: conversations.length },
               { key: 'unread', label: 'Unread', count: conversations.filter(c => c.unreadCount > 0).length },
-              { key: 'recent', label: 'Recent', count: conversations.filter(c => {
-                const dayAgo = new Date(Date.now() - 86400000)
-                return new Date(c.updatedAt) > dayAgo
-              }).length }
+              {
+                key: 'recent', label: 'Recent', count: conversations.filter(c => {
+                  const dayAgo = new Date(Date.now() - 86400000)
+                  return new Date(c.updatedAt) > dayAgo
+                }).length
+              }
             ].map(({ key, label, count }) => (
               <button
                 key={key}
                 onClick={() => setFilter(key)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
-                  filter === key
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${filter === key
                     ? 'bg-purple-600 text-white'
                     : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
-                }`}
+                  }`}
               >
                 {label} {count > 0 && `(${count})`}
               </button>
@@ -282,9 +283,8 @@ const MessageSection = ({ compact = false, maxItems = 5 }) => {
                         alt={conversation.participantInfo?.name}
                         className="w-12 h-12 rounded-full object-cover"
                       />
-                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-zinc-800 ${
-                        conversation.online ? 'bg-green-500' : 'bg-gray-400'
-                      }`} />
+                      <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-zinc-800 ${conversation.online ? 'bg-green-500' : 'bg-gray-400'
+                        }`} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
@@ -305,9 +305,8 @@ const MessageSection = ({ compact = false, maxItems = 5 }) => {
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
-                        <p className={`text-sm truncate flex-1 ${
-                          conversation.unreadCount > 0 ? 'text-white' : 'text-white/60'
-                        }`}>
+                        <p className={`text-sm truncate flex-1 ${conversation.unreadCount > 0 ? 'text-white' : 'text-white/60'
+                          }`}>
                           {conversation.lastMessage?.senderId === 'user_123' && (
                             <span className="text-white/50">You: </span>
                           )}
@@ -335,15 +334,15 @@ const MessageSection = ({ compact = false, maxItems = 5 }) => {
           <div className="text-center py-8">
             <MessageSquare className="w-12 h-12 text-white/30 mx-auto mb-4" />
             <p className="text-white/70 mb-2">
-              {searchTerm 
+              {searchTerm
                 ? 'No conversations found'
-                : filter === 'unread' 
+                : filter === 'unread'
                   ? 'No unread messages'
                   : 'No conversations yet'
               }
             </p>
             <p className="text-sm text-white/50">
-              {searchTerm 
+              {searchTerm
                 ? 'Try adjusting your search terms'
                 : 'Messages from students and property inquiries will appear here'
               }
