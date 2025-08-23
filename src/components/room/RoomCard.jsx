@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Heart, MapPin, Star, Users, ArrowRight, Eye } from 'lucide-react';
 import ShinyText from '../TextAnimations/ShinyText/ShinyText';
 import { AMENITIES_LIST } from '../../utils/constants';
+import ChatButton from '../chat/ChatButton';
 
 function RoomCard({
   room,
@@ -229,14 +230,24 @@ function RoomCard({
             </div>
           </Link>
 
-          {/* Action Button */}
-          <Link
-            to={`/room/${room.id}`}
-            className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 group/button"
-          >
-            <span>View Full Details</span>
-            <ArrowRight size={18} className="transition-transform duration-200 group-hover/button:translate-x-1" />
-          </Link>
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <Link
+              to={`/room/${room.id}`}
+              className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 group/button"
+            >
+              <span>View Details</span>
+              <ArrowRight size={18} className="transition-transform duration-200 group-hover/button:translate-x-1" />
+            </Link>
+
+            <div className="flex-shrink-0">
+              <ChatButton
+                recipientId={room.ownerId || `owner_${room.id}`}
+                roomId={room.id}
+                roomTitle={room.title}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

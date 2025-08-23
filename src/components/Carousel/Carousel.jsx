@@ -15,34 +15,34 @@ import {
 
 const DEFAULT_ITEMS = [
   {
-    title: 'Text Animations',
-    description: 'Cool text animations for your projects.',
+    title: 'Premium Accommodations',
+    description: 'Luxury student housing near top universities.',
     id: 1,
-    icon: <FiFileText className="h-[16px] w-[16px] text-white" />,
+    image: 'https://images.unsplash.com/photo-1473893604213-3df9c15611c0?q=80&w=800&h=600&fit=crop&crop=center&auto=format&dpr=2',
   },
   {
-    title: 'Animations',
-    description: 'Smooth animations for your projects.',
+    title: 'Modern Amenities',
+    description: 'Fully furnished rooms with high-speed WiFi.',
     id: 2,
-    icon: <FiCircle className="h-[16px] w-[16px] text-white" />,
+    image: 'https://images.unsplash.com/photo-1438954936179-786078772609?q=80&w=800&h=600&fit=crop&crop=center&auto=format&dpr=2',
   },
   {
-    title: 'Components',
-    description: 'Reusable components for your projects.',
+    title: 'Safe & Secure',
+    description: '24/7 security and verified property owners.',
     id: 3,
-    icon: <FiLayers className="h-[16px] w-[16px] text-white" />,
+    image: 'https://images.unsplash.com/photo-1498409505433-aff66f7ba9e6?q=80&w=800&h=600&fit=crop&crop=center&auto=format&dpr=2',
   },
   {
-    title: 'Backgrounds',
-    description: 'Beautiful backgrounds and patterns for your projects.',
+    title: 'University Proximity',
+    description: 'Walking distance to campus and libraries.',
     id: 4,
-    icon: <FiLayout className="h-[16px] w-[16px] text-white" />,
+    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=800&h=600&fit=crop&crop=center&auto=format&dpr=2',
   },
   {
-    title: 'Common UI',
-    description: 'Common UI components are coming soon!',
+    title: 'Community Living',
+    description: 'Connect with fellow students and make friends.',
     id: 5,
-    icon: <FiCode className="h-[16px] w-[16px] text-white" />,
+    image: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?q=80&w=800&h=600&fit=crop&crop=center&auto=format&dpr=2',
   },
 ];
 
@@ -54,7 +54,7 @@ const SPRING_OPTIONS = { type: 'spring', stiffness: 300, damping: 30 };
 export default function Carousel({
   items = DEFAULT_ITEMS,
   baseWidth = 300,
-  cardHeight = 200,
+  cardHeight = 280,
   autoplay = false,
   autoplayDelay = 3000,
   pauseOnHover = false,
@@ -153,8 +153,8 @@ export default function Carousel({
     <div
       ref={containerRef}
       className={`relative overflow-hidden p-4 ${round
-          ? 'rounded-full border border-white'
-          : 'rounded-[24px] border border-[#222]'
+        ? 'rounded-full border border-white'
+        : 'rounded-[24px] border border-[#222]'
         }`}
       style={{
         width: `${baseWidth}px`,
@@ -189,9 +189,9 @@ export default function Carousel({
           return (
             <motion.div
               key={index}
-              className={`relative shrink-0 flex flex-col ${round
-                  ? 'items-center justify-center text-center bg-[#060010] border-0'
-                  : 'items-start justify-between bg-[#222] border border-[#222] rounded-[12px]'
+              className={`relative shrink-0 ${round
+                ? 'flex items-center justify-center text-center bg-[#060010] border-0'
+                : 'bg-[#222] border border-[#222] rounded-[12px]'
                 } overflow-hidden cursor-grab active:cursor-grabbing`}
               style={{
                 width: itemWidth,
@@ -201,16 +201,41 @@ export default function Carousel({
               }}
               transition={effectiveTransition}
             >
-              <div className={`${round ? 'p-0 m-0' : 'mb-4 p-5'}`}>
-                <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#060010]">
-                  {item.icon}
-                </span>
-              </div>
-              <div className="p-5">
-                <div className="mb-1 font-black text-lg text-white">
-                  {item.title}
+              {/* Full background image */}
+              {item.image && !round && (
+                <div className="absolute inset-0 z-0">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    onLoad={(e) => {
+                      console.log('Image loaded successfully:', item.image);
+                      e.target.style.opacity = '1';
+                    }}
+                    onError={(e) => {
+                      console.error('Image failed to load:', item.image);
+                      e.target.style.display = 'none';
+                      e.target.parentElement.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                      e.target.parentElement.innerHTML = `<div class="flex items-center justify-center h-full text-white font-semibold">${item.title}</div>`;
+                    }}
+                    style={{ opacity: '0', transition: 'opacity 0.3s ease' }}
+                  />
+                  {/* Dark overlay for better text readability */}
+                  <div className="absolute inset-0  bg-opacity-100"></div>
                 </div>
-                <p className="text-sm text-white">{item.description}</p>
+              )}
+
+              {/* Content overlay */}
+              <div className={`relative z-10 w-full h-full flex flex-col justify-end ${round ? 'p-0 m-0 items-center justify-center' : 'p-5'}`}>
+                <div>
+                  <div className="mb-1 font-black text-lg text-white drop-shadow-lg">
+                    {item.title}
+                  </div>
+                  <p className="text-sm text-white drop-shadow-md opacity-90">
+                    {item.description}
+                  </p>
+                </div>
               </div>
             </motion.div>
           );
@@ -225,12 +250,12 @@ export default function Carousel({
             <motion.div
               key={index}
               className={`h-2 w-2 rounded-full cursor-pointer transition-colors duration-150 ${currentIndex % items.length === index
-                  ? round
-                    ? 'bg-white'
-                    : 'bg-[#333333]'
-                  : round
-                    ? 'bg-[#555]'
-                    : 'bg-[rgba(51,51,51,0.4)]'
+                ? round
+                  ? 'bg-white'
+                  : 'bg-[#333333]'
+                : round
+                  ? 'bg-[#555]'
+                  : 'bg-[rgba(51,51,51,0.4)]'
                 }`}
               animate={{
                 scale: currentIndex % items.length === index ? 1.2 : 1,

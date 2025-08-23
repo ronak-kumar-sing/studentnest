@@ -47,7 +47,7 @@ const Dashboard = () => {
     { name: 'Post New Room', icon: Plus, href: '/dashboard/post-room', color: 'bg-blue-600' },
     { name: 'View Requests', icon: Calendar, href: '/dashboard/bookings', color: 'bg-green-600' },
     { name: 'Manage Payments', icon: CreditCard, href: '/dashboard/payments', color: 'bg-purple-600' },
-    { name: 'View Analytics', icon: BarChart3, href: '/dashboard/analytics', color: 'bg-orange-600' },
+    { name: 'Modify Rooms', icon: Settings, href: '/dashboard/modifications', color: 'bg-orange-600' },
   ]
 
   const statsCards = [

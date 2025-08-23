@@ -202,13 +202,13 @@ const BookingRequests = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/30'
       case 'approved':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-500/20 text-green-200 border border-green-400/30'
       case 'declined':
-        return 'bg-red-100 text-red-800'
+        return 'bg-red-500/20 text-red-200 border border-red-400/30'
       default:
-        return 'bg-zinc-100 text-zinc-800'
+        return 'bg-white/20 backdrop-blur-sm text-white border border-white/30'
     }
   }
 
@@ -238,7 +238,7 @@ const BookingRequests = () => {
   return (
     <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-10">
+      <div className="bg-transparent backdrop-blur-3xl border-b border-white/10 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-6">
             <div className="flex items-center gap-4">
@@ -261,24 +261,24 @@ const BookingRequests = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Search and Filters */}
-        <div className="mb-6 bg-white rounded-lg p-6 shadow-sm">
+        <div className="mb-6 bg-transparent backdrop-blur-md border border-white/20 rounded-lg p-6 shadow-sm">
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="w-5 h-5 absolute left-3 top-3.5 text-zinc-400" />
+              <Search className="w-5 h-5 absolute left-3 top-3.5 text-white/50" />
               <input
                 type="text"
                 placeholder="Search by student name, room, college, or company..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
               />
             </div>
 
             {/* Filter Toggle */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden flex items-center gap-2 px-4 py-3 border border-zinc-300 rounded-lg hover:bg-zinc-50 transition-colors"
+              className="lg:hidden flex items-center gap-2 px-4 py-3 bg-transparent border border-white/30 rounded-lg hover:bg-white/10 transition-colors text-white"
             >
               <Filter className="w-5 h-5" />
               Filters
@@ -290,34 +290,34 @@ const BookingRequests = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
               >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="declined">Declined</option>
+                <option value="all" className="bg-black text-white">All Status</option>
+                <option value="pending" className="bg-black text-white">Pending</option>
+                <option value="approved" className="bg-black text-white">Approved</option>
+                <option value="declined" className="bg-black text-white">Declined</option>
               </select>
 
               <select
                 value={roomFilter}
                 onChange={(e) => setRoomFilter(e.target.value)}
-                className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
               >
-                <option value="all">All Rooms</option>
-                <option value="single">Single Room</option>
-                <option value="double">Double Room</option>
-                <option value="shared">Shared Room</option>
+                <option value="all" className="bg-black text-white">All Rooms</option>
+                <option value="single" className="bg-black text-white">Single Room</option>
+                <option value="double" className="bg-black text-white">Double Room</option>
+                <option value="shared" className="bg-black text-white">Shared Room</option>
               </select>
 
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
               >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="budget-high">Budget: High to Low</option>
-                <option value="budget-low">Budget: Low to High</option>
+                <option value="newest" className="bg-black text-white">Newest First</option>
+                <option value="oldest" className="bg-black text-white">Oldest First</option>
+                <option value="budget-high" className="bg-black text-white">Budget: High to Low</option>
+                <option value="budget-low" className="bg-black text-white">Budget: Low to High</option>
               </select>
             </div>
           </div>
@@ -329,40 +329,40 @@ const BookingRequests = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="lg:hidden mt-4 pt-4 border-t border-zinc-200"
+                className="lg:hidden mt-4 pt-4 border-t border-white/20"
               >
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                   >
-                    <option value="all">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="declined">Declined</option>
+                    <option value="all" className="bg-black text-white">All Status</option>
+                    <option value="pending" className="bg-black text-white">Pending</option>
+                    <option value="approved" className="bg-black text-white">Approved</option>
+                    <option value="declined" className="bg-black text-white">Declined</option>
                   </select>
 
                   <select
                     value={roomFilter}
                     onChange={(e) => setRoomFilter(e.target.value)}
-                    className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                   >
-                    <option value="all">All Rooms</option>
-                    <option value="single">Single Room</option>
-                    <option value="double">Double Room</option>
-                    <option value="shared">Shared Room</option>
+                    <option value="all" className="bg-black text-white">All Rooms</option>
+                    <option value="single" className="bg-black text-white">Single Room</option>
+                    <option value="double" className="bg-black text-white">Double Room</option>
+                    <option value="shared" className="bg-black text-white">Shared Room</option>
                   </select>
 
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                   >
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="budget-high">Budget: High to Low</option>
-                    <option value="budget-low">Budget: Low to High</option>
+                    <option value="newest" className="bg-black text-white">Newest First</option>
+                    <option value="oldest" className="bg-black text-white">Oldest First</option>
+                    <option value="budget-high" className="bg-black text-white">Budget: High to Low</option>
+                    <option value="budget-low" className="bg-black text-white">Budget: Low to High</option>
                   </select>
                 </div>
               </motion.div>
@@ -372,10 +372,10 @@ const BookingRequests = () => {
 
         {/* Requests List */}
         {filteredRequests.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-            <Calendar className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-zinc-900 mb-2">No requests found</h3>
-            <p className="text-zinc-600">
+          <div className="text-center py-12 bg-transparent backdrop-blur-md border border-white/20 rounded-lg shadow-sm">
+            <Calendar className="w-12 h-12 text-white/50 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-white mb-2">No requests found</h3>
+            <p className="text-white/70">
               {searchTerm || statusFilter !== 'all' || roomFilter !== 'all'
                 ? 'Try adjusting your filters'
                 : 'No booking requests yet'}
@@ -389,9 +389,9 @@ const BookingRequests = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                className="bg-transparent backdrop-blur-3xl border border-white/20 rounded-lg shadow-sm overflow-hidden hover:shadow-md hover:border-white/30 transition-all"
               >
-                <div className="p-6">
+                <div className="p-6  backdrop-blur-3xl bg-white/5">
                   <div className="flex flex-col lg:flex-row gap-6">
                     {/* Student Info */}
                     <div className="flex-1">
@@ -399,11 +399,11 @@ const BookingRequests = () => {
                         <img
                           src={request.profileImage}
                           alt={request.studentName}
-                          className="w-16 h-16 rounded-full object-cover"
+                          className="w-16 h-16 rounded-full object-cover border-2 border-white/20"
                         />
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="text-lg font-semibold text-zinc-900">
+                            <h3 className="text-lg font-semibold text-white">
                               {request.studentName}
                             </h3>
                             <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getStatusColor(request.status)}`}>
@@ -411,7 +411,7 @@ const BookingRequests = () => {
                               {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                             </span>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-zinc-600 mb-2">
+                          <div className="flex items-center gap-4 text-sm text-white/70 mb-2">
                             <span className="flex items-center gap-1">
                               <User className="w-4 h-4" />
                               Age {request.age}
@@ -429,7 +429,7 @@ const BookingRequests = () => {
                               {request.rating}
                             </span>
                           </div>
-                          <div className="text-sm text-zinc-600">
+                          <div className="text-sm text-white/70">
                             {request.college && (
                               <p>{request.course} at {request.college}</p>
                             )}
@@ -441,27 +441,27 @@ const BookingRequests = () => {
                       </div>
 
                       {/* Room Details */}
-                      <div className="bg-zinc-50 p-4 rounded-lg mb-4">
+                      <div className="bg-white/5 border border-white/10 p-4 rounded-lg mb-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <Home className="w-4 h-4 text-zinc-600" />
-                          <span className="font-medium text-zinc-900">{request.roomTitle}</span>
+                          <Home className="w-4 h-4 text-white/60" />
+                          <span className="font-medium text-white">{request.roomTitle}</span>
                         </div>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                           <div>
-                            <span className="text-zinc-600">Move-in:</span>
-                            <p className="font-medium">{new Date(request.moveInDate).toLocaleDateString()}</p>
+                            <span className="text-white/70">Move-in:</span>
+                            <p className="font-medium text-white">{new Date(request.moveInDate).toLocaleDateString()}</p>
                           </div>
                           <div>
-                            <span className="text-zinc-600">Duration:</span>
-                            <p className="font-medium">{request.duration}</p>
+                            <span className="text-white/70">Duration:</span>
+                            <p className="font-medium text-white">{request.duration}</p>
                           </div>
                           <div>
-                            <span className="text-zinc-600">Budget:</span>
-                            <p className="font-medium">₹{request.monthlyBudget.toLocaleString()}/mo</p>
+                            <span className="text-white/70">Budget:</span>
+                            <p className="font-medium text-white">₹{request.monthlyBudget.toLocaleString()}/mo</p>
                           </div>
                           <div>
-                            <span className="text-zinc-600">Requested:</span>
-                            <p className="font-medium">{formatDate(request.requestDate)}</p>
+                            <span className="text-white/70">Requested:</span>
+                            <p className="font-medium text-white">{formatDate(request.requestDate)}</p>
                           </div>
                         </div>
                       </div>
@@ -469,7 +469,7 @@ const BookingRequests = () => {
                       {/* Message */}
                       {request.message && (
                         <div className="mb-4">
-                          <p className="text-sm text-zinc-600 bg-blue-50 p-3 rounded-lg">
+                          <p className="text-sm text-white/90 bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 p-3 rounded-lg">
                             "{request.message}"
                           </p>
                         </div>
@@ -481,7 +481,7 @@ const BookingRequests = () => {
                           value && (
                             <span
                               key={key}
-                              className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium"
+                              className="px-2 py-1 bg-green-500/20 text-green-200 border border-green-400/30 text-xs rounded-full font-medium"
                             >
                               {key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}
                             </span>
@@ -495,12 +495,12 @@ const BookingRequests = () => {
                       <div className="flex lg:flex-col gap-2">
                         <button
                           onClick={() => setSelectedRequest(request)}
-                          className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+                          className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-200 border border-blue-400/30 rounded-lg hover:bg-blue-500/30 transition-colors"
                         >
                           <Eye className="w-4 h-4" />
                           View Details
                         </button>
-                        <button className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-zinc-100 text-zinc-700 rounded-lg hover:bg-zinc-200 transition-colors">
+                        <button className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm text-white border border-white/30 rounded-lg hover:bg-white/20 transition-colors">
                           <MessageSquare className="w-4 h-4" />
                           Message
                         </button>
@@ -509,14 +509,14 @@ const BookingRequests = () => {
                       <div className="flex lg:flex-col gap-2">
                         <a
                           href={`tel:${request.phone}`}
-                          className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+                          className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-500/20 text-green-200 border border-green-400/30 rounded-lg hover:bg-green-500/30 transition-colors"
                         >
                           <Phone className="w-4 h-4" />
                           Call
                         </a>
                         <a
                           href={`mailto:${request.email}`}
-                          className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                          className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-purple-500/20 text-purple-200 border border-purple-400/30 rounded-lg hover:bg-purple-500/30 transition-colors"
                         >
                           <Mail className="w-4 h-4" />
                           Email
@@ -524,17 +524,17 @@ const BookingRequests = () => {
                       </div>
 
                       {request.status === 'pending' && (
-                        <div className="flex lg:flex-col gap-2 pt-2 border-t border-zinc-200">
+                        <div className="flex lg:flex-col gap-2 pt-2 border-t border-white/20">
                           <button
                             onClick={() => handleApprove(request.id)}
-                            className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                            className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-600/80 text-white rounded-lg hover:bg-green-600 transition-colors"
                           >
                             <Check className="w-4 h-4" />
                             Approve
                           </button>
                           <button
                             onClick={() => handleDecline(request.id)}
-                            className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                            className="flex-1 lg:w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600/80 text-white rounded-lg hover:bg-red-600 transition-colors"
                           >
                             <X className="w-4 h-4" />
                             Decline
@@ -557,22 +557,22 @@ const BookingRequests = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50"
             onClick={() => setSelectedRequest(null)}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-black/80 backdrop-blur-md border border-white/20 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-zinc-900">Request Details</h2>
+                  <h2 className="text-xl font-bold text-white">Request Details</h2>
                   <button
                     onClick={() => setSelectedRequest(null)}
-                    className="p-2 hover:bg-zinc-100 rounded-lg transition-colors"
+                    className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -584,36 +584,36 @@ const BookingRequests = () => {
                     <img
                       src={selectedRequest.profileImage}
                       alt={selectedRequest.studentName}
-                      className="w-20 h-20 rounded-full object-cover"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-white/20"
                     />
                     <div>
-                      <h3 className="text-lg font-semibold text-zinc-900">
+                      <h3 className="text-lg font-semibold text-white">
                         {selectedRequest.studentName}
                       </h3>
-                      <p className="text-zinc-600">
+                      <p className="text-white/70">
                         {selectedRequest.college || selectedRequest.company}
                       </p>
                       <div className="flex items-center gap-2 mt-1">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-medium">{selectedRequest.rating}</span>
-                        <span className="text-sm text-zinc-600">
+                        <span className="text-sm font-medium text-white">{selectedRequest.rating}</span>
+                        <span className="text-sm text-white/60">
                           ({selectedRequest.previousStays} previous stays)
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-zinc-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-zinc-900 mb-2">Documents Submitted</h4>
+                  <div className="bg-white/5 border border-white/10 p-4 rounded-lg">
+                    <h4 className="font-medium text-white mb-2">Documents Submitted</h4>
                     <div className="grid grid-cols-2 gap-2">
                       {Object.entries(selectedRequest.documents).map(([doc, submitted]) => (
                         <div key={doc} className="flex items-center gap-2">
                           {submitted ? (
-                            <Check className="w-4 h-4 text-green-600" />
+                            <Check className="w-4 h-4 text-green-400" />
                           ) : (
-                            <X className="w-4 h-4 text-red-600" />
+                            <X className="w-4 h-4 text-red-400" />
                           )}
-                          <span className={`text-sm ${submitted ? 'text-green-800' : 'text-red-800'}`}>
+                          <span className={`text-sm ${submitted ? 'text-green-200' : 'text-red-200'}`}>
                             {doc.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                           </span>
                         </div>
@@ -622,8 +622,8 @@ const BookingRequests = () => {
                   </div>
 
                   <div>
-                    <h4 className="font-medium text-zinc-900 mb-2">Complete Message</h4>
-                    <p className="text-zinc-600 bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-medium text-white mb-2">Complete Message</h4>
+                    <p className="text-white/90 bg-blue-500/10 border border-blue-400/20 p-4 rounded-lg">
                       {selectedRequest.message}
                     </p>
                   </div>

@@ -159,15 +159,15 @@ const Payments = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-500/20 text-green-200 border border-green-400/30'
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-500/20 text-yellow-200 border border-yellow-400/30'
       case 'failed':
-        return 'bg-red-100 text-red-800'
+        return 'bg-red-500/20 text-red-200 border border-red-400/30'
       case 'processing':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-blue-500/20 text-blue-200 border border-blue-400/30'
       default:
-        return 'bg-zinc-100 text-zinc-800'
+        return 'bg-white/20 backdrop-blur-sm text-white border border-white/30'
     }
   }
 
@@ -221,7 +221,7 @@ const Payments = () => {
   return (
     <div className="min-h-screen bg-transparent">
       {/* Header */}
-      <div className="bg-black/20 backdrop-blur-md border-b border-white/10 sticky top-0 z-10">
+      <div className="bg-transparent backdrop-blur-md border-b border-white/10 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-6">
             <div className="flex items-center gap-4">
@@ -238,7 +238,7 @@ const Payments = () => {
             </div>
             <button
               onClick={exportPayments}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600/80 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
               <Download className="w-4 h-4" />
               Export
@@ -253,23 +253,23 @@ const Payments = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 rounded-xl shadow-sm"
+            className="bg-white/5 backdrop-blur-md border border-white/20 p-6 rounded-xl shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-zinc-600 mb-1">Total Revenue</p>
-                <p className="text-2xl font-bold text-zinc-900">
+                <p className="text-sm font-medium text-white/70 mb-1">Total Revenue</p>
+                <p className="text-2xl font-bold text-white">
                   ₹{(stats.totalRevenue / 1000).toFixed(0)}K
                 </p>
                 <div className="flex items-center gap-1 mt-2">
-                  <TrendingUp className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-green-600 font-medium">
+                  <TrendingUp className="w-4 h-4 text-green-400" />
+                  <span className="text-sm text-green-400 font-medium">
                     +{stats.monthlyGrowth}%
                   </span>
                 </div>
               </div>
-              <div className="p-3 rounded-lg bg-blue-50">
-                <DollarSign className="w-6 h-6 text-blue-600" />
+              <div className="p-3 rounded-lg bg-blue-500/20 border border-blue-400/30">
+                <DollarSign className="w-6 h-6 text-blue-400" />
               </div>
             </div>
           </motion.div>
@@ -278,20 +278,20 @@ const Payments = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white p-6 rounded-xl shadow-sm"
+            className="bg-white/5 backdrop-blur-md border border-white/20 p-6 rounded-xl shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-zinc-600 mb-1">Pending Amount</p>
-                <p className="text-2xl font-bold text-zinc-900">
+                <p className="text-sm font-medium text-white/70 mb-1">Pending Amount</p>
+                <p className="text-2xl font-bold text-white">
                   ₹{(stats.pendingAmount / 1000).toFixed(0)}K
                 </p>
-                <p className="text-sm text-orange-600 mt-2">
+                <p className="text-sm text-orange-400 mt-2">
                   {stats.pendingPayments} payments due
                 </p>
               </div>
-              <div className="p-3 rounded-lg bg-orange-50">
-                <Clock className="w-6 h-6 text-orange-600" />
+              <div className="p-3 rounded-lg bg-orange-500/20 border border-orange-400/30">
+                <Clock className="w-6 h-6 text-orange-400" />
               </div>
             </div>
           </motion.div>
@@ -300,16 +300,16 @@ const Payments = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white p-6 rounded-xl shadow-sm"
+            className="bg-white/5 backdrop-blur-md border border-white/20 p-6 rounded-xl shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-zinc-600 mb-1">Completed</p>
-                <p className="text-2xl font-bold text-zinc-900">{stats.completedPayments}</p>
-                <p className="text-sm text-green-600 mt-2">This month</p>
+                <p className="text-sm font-medium text-white/70 mb-1">Completed</p>
+                <p className="text-2xl font-bold text-white">{stats.completedPayments}</p>
+                <p className="text-sm text-green-400 mt-2">This month</p>
               </div>
-              <div className="p-3 rounded-lg bg-green-50">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+              <div className="p-3 rounded-lg bg-green-500/20 border border-green-400/30">
+                <CheckCircle className="w-6 h-6 text-green-400" />
               </div>
             </div>
           </motion.div>
@@ -318,35 +318,35 @@ const Payments = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white p-6 rounded-xl shadow-sm"
+            className="bg-white/5 backdrop-blur-md border border-white/20 p-6 rounded-xl shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-zinc-600 mb-1">Average Payment</p>
-                <p className="text-2xl font-bold text-zinc-900">
+                <p className="text-sm font-medium text-white/70 mb-1">Average Payment</p>
+                <p className="text-2xl font-bold text-white">
                   ₹{(stats.averagePayment / 1000).toFixed(1)}K
                 </p>
-                <p className="text-sm text-zinc-600 mt-2">Per transaction</p>
+                <p className="text-sm text-white/60 mt-2">Per transaction</p>
               </div>
-              <div className="p-3 rounded-lg bg-purple-50">
-                <TrendingUp className="w-6 h-6 text-purple-600" />
+              <div className="p-3 rounded-lg bg-purple-500/20 border border-purple-400/30">
+                <TrendingUp className="w-6 h-6 text-purple-400" />
               </div>
             </div>
           </motion.div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+        <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-lg p-6 shadow-sm mb-6">
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="w-5 h-5 absolute left-3 top-3.5 text-zinc-400" />
+              <Search className="w-5 h-5 absolute left-3 top-3.5 text-white/50" />
               <input
                 type="text"
                 placeholder="Search by student name, room, or transaction ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
               />
             </div>
 
@@ -355,84 +355,84 @@ const Payments = () => {
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
               >
-                <option value="all">All Status</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="failed">Failed</option>
-                <option value="processing">Processing</option>
+                <option value="all" className="bg-black text-white">All Status</option>
+                <option value="completed" className="bg-black text-white">Completed</option>
+                <option value="pending" className="bg-black text-white">Pending</option>
+                <option value="failed" className="bg-black text-white">Failed</option>
+                <option value="processing" className="bg-black text-white">Processing</option>
               </select>
 
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
-                className="px-4 py-3 border border-zinc-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-4 py-3 bg-transparent border border-white/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
               >
-                <option value="all">All Time</option>
-                <option value="7days">Last 7 days</option>
-                <option value="30days">Last 30 days</option>
-                <option value="90days">Last 90 days</option>
+                <option value="all" className="bg-black text-white">All Time</option>
+                <option value="7days" className="bg-black text-white">Last 7 days</option>
+                <option value="30days" className="bg-black text-white">Last 30 days</option>
+                <option value="90days" className="bg-black text-white">Last 90 days</option>
               </select>
             </div>
           </div>
         </div>
 
         {/* Payments Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-lg shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-zinc-50 border-b border-zinc-200">
+              <thead className="bg-white/5 border-b border-white/20">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Student</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Room</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Amount</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Type</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Payment Method</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Status</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Date</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-zinc-600">Actions</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Student</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Room</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Amount</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Type</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Payment Method</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Status</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Date</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-white/70">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-200">
+              <tbody className="divide-y divide-white/10">
                 {filteredPayments.map((payment, index) => (
                   <motion.tr
                     key={payment.id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: index * 0.05 }}
-                    className="hover:bg-zinc-50"
+                    className="hover:bg-white/5 transition-colors"
                   >
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-medium text-zinc-900">{payment.studentName}</p>
-                        <p className="text-sm text-zinc-600">{payment.id}</p>
+                        <p className="font-medium text-white">{payment.studentName}</p>
+                        <p className="text-sm text-white/60">{payment.id}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-zinc-900">{payment.roomTitle}</p>
+                      <p className="text-sm text-white/80">{payment.roomTitle}</p>
                     </td>
                     <td className="px-6 py-4">
                       <div>
-                        <p className="font-medium text-zinc-900">
+                        <p className="font-medium text-white">
                           ₹{payment.amount.toLocaleString()}
                         </p>
                         {payment.lateFee > 0 && (
-                          <p className="text-sm text-red-600">
+                          <p className="text-sm text-red-400">
                             +₹{payment.lateFee} late fee
                           </p>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                      <span className="px-2 py-1 bg-blue-500/20 text-blue-200 border border-blue-400/30 text-sm rounded-full">
                         {payment.type}
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         {getPaymentMethodIcon(payment.paymentMethod)}
-                        <span className="text-sm text-zinc-900">{payment.paymentMethod}</span>
+                        <span className="text-sm text-white/80">{payment.paymentMethod}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -443,8 +443,8 @@ const Payments = () => {
                     </td>
                     <td className="px-6 py-4">
                       <div>
-                        <p className="text-sm text-zinc-900">{formatDate(payment.date)}</p>
-                        <p className="text-xs text-zinc-500">
+                        <p className="text-sm text-white/80">{formatDate(payment.date)}</p>
+                        <p className="text-xs text-white/60">
                           Due: {formatDate(payment.dueDate)}
                         </p>
                       </div>
@@ -453,17 +453,17 @@ const Payments = () => {
                       <div className="flex items-center gap-2">
                         {payment.receiptUrl && (
                           <button
-                            className="p-1 hover:bg-zinc-200 rounded transition-colors"
+                            className="p-1 hover:bg-white/10 rounded transition-colors text-white/70"
                             title="View Receipt"
                           >
-                            <Eye className="w-4 h-4 text-zinc-600" />
+                            <Eye className="w-4 h-4" />
                           </button>
                         )}
                         <button
-                          className="p-1 hover:bg-zinc-200 rounded transition-colors"
+                          className="p-1 hover:bg-white/10 rounded transition-colors text-white/70"
                           title="More Options"
                         >
-                          <MoreHorizontal className="w-4 h-4 text-zinc-600" />
+                          <MoreHorizontal className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
@@ -475,9 +475,9 @@ const Payments = () => {
 
           {filteredPayments.length === 0 && (
             <div className="text-center py-12">
-              <DollarSign className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-zinc-900 mb-2">No payments found</h3>
-              <p className="text-zinc-600">
+              <DollarSign className="w-12 h-12 text-white/50 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-white mb-2">No payments found</h3>
+              <p className="text-white/70">
                 {searchTerm || statusFilter !== 'all' || dateRange !== 'all'
                   ? 'Try adjusting your filters'
                   : 'No payment records yet'}
@@ -489,23 +489,23 @@ const Payments = () => {
         {/* Summary Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
           {/* Recent Transactions */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-zinc-900 mb-4">Recent Transactions</h3>
+          <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl shadow-sm p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Recent Transactions</h3>
             <div className="space-y-4">
               {filteredPayments.slice(0, 5).map((payment) => (
-                <div key={payment.id} className="flex items-center justify-between p-3 bg-zinc-50 rounded-lg">
+                <div key={payment.id} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${getStatusColor(payment.status)}`}>
                       {getStatusIcon(payment.status)}
                     </div>
                     <div>
-                      <p className="font-medium text-zinc-900">{payment.studentName}</p>
-                      <p className="text-sm text-zinc-600">{payment.type}</p>
+                      <p className="font-medium text-white">{payment.studentName}</p>
+                      <p className="text-sm text-white/60">{payment.type}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-zinc-900">₹{payment.amount.toLocaleString()}</p>
-                    <p className="text-sm text-zinc-600">{formatDate(payment.date)}</p>
+                    <p className="font-medium text-white">₹{payment.amount.toLocaleString()}</p>
+                    <p className="text-sm text-white/60">{formatDate(payment.date)}</p>
                   </div>
                 </div>
               ))}
@@ -513,8 +513,8 @@ const Payments = () => {
           </div>
 
           {/* Payment Methods Breakdown */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="text-lg font-semibold text-zinc-900 mb-4">Payment Methods</h3>
+          <div className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl shadow-sm p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Payment Methods</h3>
             <div className="space-y-4">
               {['UPI', 'Bank Transfer', 'Credit Card', 'Wallet'].map((method) => {
                 const count = filteredPayments.filter(p => p.paymentMethod === method && p.status === 'completed').length
@@ -523,17 +523,17 @@ const Payments = () => {
                 return (
                   <div key={method} className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      {getPaymentMethodIcon(method)}
-                      <span className="text-zinc-900">{method}</span>
+                      <span className="text-white/70">{getPaymentMethodIcon(method)}</span>
+                      <span className="text-white/80">{method}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="w-24 bg-zinc-200 rounded-full h-2">
+                      <div className="w-24 bg-white/10 rounded-full h-2">
                         <div
-                          className="bg-blue-600 h-2 rounded-full"
+                          className="bg-blue-500 h-2 rounded-full"
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
-                      <span className="text-sm text-zinc-600 w-12 text-right">
+                      <span className="text-sm text-white/60 w-12 text-right">
                         {percentage.toFixed(0)}%
                       </span>
                     </div>

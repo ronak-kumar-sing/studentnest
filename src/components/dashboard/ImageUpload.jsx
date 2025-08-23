@@ -112,8 +112,8 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
       {/* Upload Area */}
       <div
         className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors ${dragActive
-            ? 'border-blue-500 bg-blue-50'
-            : 'border-zinc-300 hover:border-zinc-400'
+          ? 'border-blue-400 bg-blue-500/20 backdrop-blur-sm'
+          : 'border-white/30 hover:border-white/50 bg-white/10 backdrop-blur-sm'
           }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -131,29 +131,29 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
 
         {uploading ? (
           <div className="space-y-4">
-            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-zinc-600">Processing images...</p>
+            <div className="w-12 h-12 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-white/70">Processing images...</p>
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="w-12 h-12 mx-auto bg-zinc-100 rounded-full flex items-center justify-center">
-              <Camera className="w-6 h-6 text-zinc-600" />
+            <div className="w-12 h-12 mx-auto bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <Camera className="w-6 h-6 text-white/70" />
             </div>
             <div>
-              <h4 className="text-lg font-medium text-zinc-900 mb-2">
+              <h4 className="text-lg font-medium text-white mb-2">
                 Upload Room Photos
               </h4>
-              <p className="text-zinc-600 mb-4">
+              <p className="text-white/70 mb-4">
                 Drag and drop images here, or{' '}
                 <button
                   type="button"
                   onClick={openFileDialog}
-                  className="text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-blue-300 hover:text-blue-400 font-medium"
                 >
                   browse files
                 </button>
               </p>
-              <div className="flex items-center justify-center gap-4 text-sm text-zinc-500">
+              <div className="flex items-center justify-center gap-4 text-sm text-white/60">
                 <span>Max {maxImages} images</span>
                 <span>•</span>
                 <span>Up to {Math.round(maxSize / (1024 * 1024))}MB each</span>
@@ -183,15 +183,15 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-red-50 border border-red-200 rounded-lg p-4"
+            className="bg-red-500/20 backdrop-blur-sm border border-red-400/30 rounded-lg p-4"
           >
             <div className="flex items-center gap-2 mb-2">
-              <AlertCircle className="w-5 h-5 text-red-600" />
-              <h5 className="font-medium text-red-900">Upload Errors</h5>
+              <AlertCircle className="w-5 h-5 text-red-300" />
+              <h5 className="font-medium text-red-200">Upload Errors</h5>
             </div>
             <ul className="space-y-1">
               {errors.map((error, index) => (
-                <li key={index} className="text-sm text-red-700">
+                <li key={index} className="text-sm text-red-200">
                   • {error}
                 </li>
               ))}
@@ -204,11 +204,11 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
       {images.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-4">
-            <h5 className="font-medium text-zinc-900">
+            <h5 className="font-medium text-white">
               Uploaded Images ({images.length}/{maxImages})
             </h5>
             {images.length > 0 && (
-              <p className="text-sm text-zinc-600">
+              <p className="text-sm text-white/70">
                 The first image will be used as the cover photo
               </p>
             )}
@@ -222,7 +222,7 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  className="group relative bg-white rounded-lg shadow-sm border border-zinc-200 overflow-hidden"
+                  className="group relative bg-white/20 backdrop-blur-sm rounded-lg shadow-sm border border-white/30 overflow-hidden"
                 >
                   {/* Cover Photo Badge */}
                   {index === 0 && (
@@ -253,10 +253,10 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
 
                   {/* Image Info */}
                   <div className="p-3">
-                    <p className="text-sm font-medium text-zinc-900 truncate">
+                    <p className="text-sm font-medium text-white truncate">
                       {image.name}
                     </p>
-                    <p className="text-xs text-zinc-600">
+                    <p className="text-xs text-white/60">
                       {(image.size / 1024).toFixed(1)} KB
                     </p>
                   </div>
@@ -268,9 +268,9 @@ const ImageUpload = ({ images = [], onImagesChange, maxImages = 10, maxSize = 5 
       )}
 
       {/* Upload Guidelines */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h6 className="font-medium text-blue-900 mb-2">Photography Tips</h6>
-        <ul className="text-sm text-blue-800 space-y-1">
+      <div className="bg-blue-500/20 backdrop-blur-sm border border-blue-400/30 rounded-lg p-4">
+        <h6 className="font-medium text-blue-300 mb-2">Photography Tips</h6>
+        <ul className="text-sm text-blue-200 space-y-1">
           <li>• Take photos in good lighting (natural light preferred)</li>
           <li>• Show different angles of the room</li>
           <li>• Include photos of amenities and common areas</li>

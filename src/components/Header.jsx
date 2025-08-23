@@ -4,6 +4,7 @@ import { Bookmark } from 'lucide-react'
 import FuzzyText from './TextAnimations/FuzzyText/FuzzyText';
 import ShinyText from './TextAnimations/ShinyText/ShinyText';
 import { useSavedRooms } from '../contexts/SavedRoomsContext'
+import NotificationBell from './notifications/Bell/NotificationBell'
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,8 +66,18 @@ function Header() {
               <div className='absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out'></div>
             </Link>
 
+            {/* Notification Bell */}
+            <NotificationBell />
+
             {!isScrolled && (
               <>
+                <Link to="/chat-demo" className='text-white font-medium relative group overflow-hidden py-2 px-3 rounded-full flex items-center gap-2'>
+                  <span className='relative z-10 transition-colors duration-300 group-hover:text-cyan-300'>
+                    💬 Chat Demo
+                  </span>
+                  <div className='absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out'></div>
+                </Link>
+
                 <Link to="/dashboard" className='text-white font-medium relative group overflow-hidden py-2 px-3 rounded-full flex items-center gap-2'>
                   <span className='relative z-10 transition-colors duration-300 group-hover:text-orange-300'>
                     Dashboard
