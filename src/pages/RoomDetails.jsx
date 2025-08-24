@@ -35,6 +35,7 @@ import ShinyText from '../components/TextAnimations/ShinyText/ShinyText'
 import { useSavedRooms } from '../contexts/SavedRoomsContext'
 import { useToast } from '../components/Toast'
 import { useChat } from '../contexts/ChatContext'
+import ReviewsSection from '../components/Reviews/ReviewsSection'
 
 // Mock API service
 const roomService = {
@@ -69,16 +70,34 @@ const roomService = {
           userName: 'Priya Singh',
           rating: 5,
           date: '2 months ago',
-          comment: 'Excellent place! Very clean and the owner is very helpful. Perfect location near the university.',
-          verified: true
+          comment: 'Excellent place! Very clean and the owner is very helpful. Perfect location near the university. I have been staying here for over 6 months now and my experience has been absolutely wonderful. The room is spacious, well-ventilated, and gets plenty of natural light throughout the day. The owner, Mr. Sharma, is incredibly responsive and addresses any concerns immediately. The building has excellent security with CCTV cameras and a guard at the entrance 24/7. The kitchen facilities are top-notch with all modern appliances including a microwave, refrigerator, and induction cooktop. The area is very safe for female students, and I never felt unsafe even while returning late from college. The proximity to the metro station makes commuting very convenient. I would definitely recommend this place to any student looking for comfortable and affordable accommodation.',
+          verified: true,
+          helpfulCount: 12,
+          stayDuration: '6 months',
+          categories: {
+            cleanliness: 5,
+            location: 5,
+            facilities: 5,
+            owner: 5,
+            value: 5
+          }
         },
         {
           id: 2,
           userName: 'Rahul Kumar',
           rating: 4,
           date: '3 months ago',
-          comment: 'Good room with decent facilities. The kitchen is well-equipped and the area is safe.',
-          verified: true
+          comment: 'Good room with decent facilities. The kitchen is well-equipped and the area is safe. The room size is adequate for a single person, though it could be a bit bigger. The internet connection is reliable and fast, which is great for online classes and assignments. The only minor issue is that the hot water supply can be inconsistent during peak hours, but overall it\'s a good place to stay.',
+          verified: true,
+          helpfulCount: 8,
+          stayDuration: '4 months',
+          categories: {
+            cleanliness: 4,
+            location: 4,
+            facilities: 4,
+            owner: 4,
+            value: 4
+          }
         },
         {
           id: 3,
@@ -86,7 +105,58 @@ const roomService = {
           rating: 5,
           date: '1 month ago',
           comment: 'Amazing experience! The room is exactly as shown in photos. Highly recommend for female students.',
-          verified: true
+          verified: true,
+          helpfulCount: 5,
+          stayDuration: '2 months',
+          categories: {
+            cleanliness: 5,
+            location: 5,
+            facilities: 5,
+            owner: 5,
+            value: 5
+          }
+        },
+        {
+          id: 4,
+          userName: 'Vikash Gupta',
+          rating: 3,
+          date: '4 months ago',
+          comment: 'The room is okay for the price point. Location is convenient as it\'s close to the metro and several food joints. However, the room could use some maintenance work - the paint is peeling in some areas and the bathroom fixtures are a bit old. The owner is responsive to complaints but the resolution time could be faster. The building doesn\'t have a lift which can be inconvenient if you have heavy luggage. Internet speed is decent during the day but tends to slow down in the evening when everyone is online. Overall, it\'s an average place - not the best but definitely not the worst either. If you\'re looking for budget accommodation and don\'t mind compromising on some amenities, this could work for you.',
+          verified: true,
+          helpfulCount: 3,
+          stayDuration: '8 months',
+          categories: {
+            cleanliness: 3,
+            location: 4,
+            facilities: 3,
+            owner: 3,
+            value: 4
+          },
+          ownerResponse: {
+            date: '3 months ago',
+            message: 'Thank you for your feedback, Vikash. We have addressed the maintenance issues you mentioned and upgraded the bathroom fixtures. We\'re also working on improving the internet infrastructure. We appreciate your patience and hope your experience has improved.'
+          }
+        },
+        {
+          id: 5,
+          userName: 'Meera Patel',
+          rating: 2,
+          date: '5 months ago',
+          comment: 'Had a mixed experience here. While the location is great and the rent is reasonable, there were several issues during my stay. The room had a persistent dampness problem during the monsoon season, which made it uncomfortable. The common areas were not cleaned regularly, and there were frequent disputes among tenants about kitchen usage timings. The owner was not very responsive to complaints and took a long time to address maintenance issues. I had to follow up multiple times just to get a broken window pane replaced. The security deposit refund process was also quite delayed and involved unnecessary hassles.',
+          verified: true,
+          helpfulCount: 7,
+          stayDuration: '5 months',
+          categories: {
+            cleanliness: 2,
+            location: 4,
+            facilities: 2,
+            owner: 2,
+            value: 3
+          },
+          ownerResponse: {
+            date: '4 months ago',
+            message: 'We sincerely apologize for the issues you faced during your stay, Meera. We have since implemented a more proactive maintenance schedule and improved our responsiveness to tenant concerns. We\'ve also addressed the dampness issue with proper waterproofing. Your feedback helps us improve our services.'
+          }
         }
       ],
       owner: {
@@ -682,90 +752,6 @@ const AmenitiesList = ({ amenities }) => {
   )
 }
 
-// Reviews Component
-const ReviewsSection = ({ reviews, rating, totalReviews }) => {
-  const [showAllReviews, setShowAllReviews] = useState(false)
-  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 3)
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold text-white">
-          Reviews & Ratings
-        </h3>
-        <button className="text-blue-400 hover:text-blue-300 font-medium">
-          <ShinyText text="Write a Review" speed={3} className="font-medium" />
-        </button>
-      </div>
-
-      <div className="flex items-center gap-4">
-        <div className="text-4xl font-bold text-white">{rating}</div>
-        <div>
-          <div className="flex items-center gap-1 mb-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`w-4 h-4 ${star <= Math.floor(rating)
-                  ? 'fill-yellow-400 text-yellow-400'
-                  : 'text-zinc-600'
-                  }`}
-              />
-            ))}
-          </div>
-          <div className="text-zinc-400">{totalReviews} reviews</div>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        {displayedReviews.map((review) => (
-          <div key={review.id} className="border-b border-zinc-800 pb-4 last:border-b-0">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
-                  {review.userName.charAt(0)}
-                </div>
-                <div>
-                  <div className="font-medium text-white">{review.userName}</div>
-                  {review.verified && (
-                    <div className="flex items-center gap-1 text-xs text-green-400">
-                      <CheckCircle className="w-3 h-3" />
-                      Verified
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      className={`w-3 h-3 ${star <= review.rating
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-zinc-600'
-                        }`}
-                    />
-                  ))}
-                </div>
-                <div className="text-xs text-zinc-500">{review.date}</div>
-              </div>
-            </div>
-            <p className="text-zinc-300">{review.comment}</p>
-          </div>
-        ))}
-      </div>
-
-      {reviews.length > 3 && (
-        <button
-          onClick={() => setShowAllReviews(!showAllReviews)}
-          className="text-blue-400 hover:text-blue-300 font-medium"
-        >
-          {showAllReviews ? 'Show Less' : `Show All ${reviews.length} Reviews`}
-        </button>
-      )}
-    </div>
-  )
-}
-
 // Owner Contact Component
 const OwnerContact = ({ owner }) => {
   return (
@@ -953,6 +939,7 @@ function RoomDetails() {
   const navigate = useNavigate()
   const { toggleSaveRoom, isRoomSaved, toastMessage, setToastMessage } = useSavedRooms()
   const { showToast, ToastComponent } = useToast()
+  const [roomReviews, setRoomReviews] = useState([])
 
   const { data: room, isLoading, error } = useQuery({
     queryKey: ['room', id],
@@ -960,6 +947,18 @@ function RoomDetails() {
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
   })
+
+  // Initialize room reviews when room data is loaded
+  useEffect(() => {
+    if (room?.reviews) {
+      setRoomReviews(room.reviews)
+    }
+  }, [room])
+
+  // Handle new review submission
+  const handleReviewSubmit = (newReview) => {
+    setRoomReviews(prev => [newReview, ...prev])
+  }
 
   // Show toast when toastMessage changes
   useEffect(() => {
@@ -1046,8 +1045,8 @@ function RoomDetails() {
                   </span>
                   {room.accommodationType && (
                     <span className={`px-3 py-1 text-sm rounded-full font-medium border ${room.accommodationType === 'pg'
-                        ? 'bg-green-900/50 text-green-400 border-green-700'
-                        : 'bg-purple-900/50 text-purple-400 border-purple-700'
+                      ? 'bg-green-900/50 text-green-400 border-green-700'
+                      : 'bg-purple-900/50 text-purple-400 border-purple-700'
                       }`}>
                       {room.accommodationType === 'pg' ? 'PG Accommodation' : 'Private Room'}
                     </span>
@@ -1259,9 +1258,11 @@ function RoomDetails() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <ReviewsSection
-                reviews={room.reviews}
+                reviews={roomReviews}
                 rating={room.rating}
                 totalReviews={room.totalReviews}
+                room={room}
+                onReviewSubmit={handleReviewSubmit}
               />
             </motion.div>
           </div>

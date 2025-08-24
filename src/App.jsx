@@ -22,6 +22,8 @@ import { NotificationProvider } from './contexts/NotificationContext'
 import ToastContainer from './components/notifications/Toast/ToastContainer'
 import DevStatusIndicator from './components/DevStatusIndicator'
 import ChatDemo from './pages/ChatDemo'
+import Auth from './pages/Auth'
+
 
 function App() {
   const location = useLocation()
@@ -31,7 +33,9 @@ function App() {
     '/room/',
     '/book',
     '/visit',
-    '/dashboard'
+    '/dashboard',
+    '/auth',
+    '/messages'
   ]
 
   // Check if current route should hide header
@@ -46,7 +50,7 @@ function App() {
           {/* Aurora Background - Fixed to viewport */}
           <div className='fixed inset-0 w-full h-full -z-10 bg-zinc-900'>
             <Aurora
-              colorStops={["#438ef7", "#000000", "#000000"]}
+              colorStops={["#3B82F6", "#0F172A", "#0F172A"]}
               blend={0.5}
               amplitude={1.0}
               speed={0.5}
@@ -56,6 +60,10 @@ function App() {
           <div className={`relative z-10 ${shouldHideHeader ? 'pt-0' : 'pt-20'}`}>
             {!shouldHideHeader && <Header />}
             <Routes>
+              {/* Auth section */}
+              <Route path="/auth" element={<Auth />} />
+
+              {/* Main App */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />

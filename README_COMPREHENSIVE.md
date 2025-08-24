@@ -36,7 +36,7 @@ Search Capabilities:
 
 ### 🏠 **Accommodation Types**
 - **🛏️ Private Rooms**: Independent rooms with private facilities
-- **👥 Shared Rooms**: Budget-friendly shared accommodations  
+- **👥 Shared Rooms**: Budget-friendly shared accommodations
 - **🏢 PG (Paying Guest)**: Full-service accommodations with meals
 - **🏢 Studio Apartments**: Self-contained units with kitchenette
 - **🏫 Hostel Rooms**: Institutional-style budget accommodations

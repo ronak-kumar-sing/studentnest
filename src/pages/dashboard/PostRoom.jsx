@@ -258,27 +258,27 @@ const PostRoom = () => {
                       key={type.id}
                       onClick={() => handleInputChange('accommodationType', type.id)}
                       className={`p-6 border-2 rounded-xl cursor-pointer transition-all ${formData.accommodationType === type.id
-                          ? type.color === 'green'
-                            ? 'border-green-400 bg-green-500/20 backdrop-blur-sm'
-                            : 'border-blue-400 bg-blue-500/20 backdrop-blur-sm'
-                          : 'border-white/30 bg-white/10 backdrop-blur-sm hover:border-white/50'
+                        ? type.color === 'green'
+                          ? 'border-green-400 bg-green-500/20 backdrop-blur-sm'
+                          : 'border-blue-400 bg-blue-500/20 backdrop-blur-sm'
+                        : 'border-white/30 bg-white/10 backdrop-blur-sm hover:border-white/50'
                         }`}
                     >
                       <div className="flex items-start space-x-4">
                         <type.icon className={`w-8 h-8 mt-1 ${formData.accommodationType === type.id
-                            ? type.color === 'green' ? 'text-green-300' : 'text-blue-300'
-                            : 'text-white/70'
+                          ? type.color === 'green' ? 'text-green-300' : 'text-blue-300'
+                          : 'text-white/70'
                           }`} />
                         <div className="flex-1">
                           <h3 className={`text-lg font-semibold mb-2 ${formData.accommodationType === type.id
-                              ? type.color === 'green' ? 'text-green-300' : 'text-blue-300'
-                              : 'text-white'
+                            ? type.color === 'green' ? 'text-green-300' : 'text-blue-300'
+                            : 'text-white'
                             }`}>
                             {type.name}
                           </h3>
                           <p className={`text-sm ${formData.accommodationType === type.id
-                              ? type.color === 'green' ? 'text-green-200' : 'text-blue-200'
-                              : 'text-white/70'
+                            ? type.color === 'green' ? 'text-green-200' : 'text-blue-200'
+                            : 'text-white/70'
                             }`}>
                             {type.description}
                           </p>
