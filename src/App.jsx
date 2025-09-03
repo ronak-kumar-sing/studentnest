@@ -35,7 +35,8 @@ function App() {
     '/visit',
     '/dashboard',
     '/auth',
-    '/messages'
+    '/messages',
+    '/saved'
   ]
 
   // Check if current route should hide header
@@ -48,13 +49,13 @@ function App() {
       <ChatProvider>
         <div className='relative min-h-screen overflow-x-hidden'>
           {/* Aurora Background - Fixed to viewport */}
-          <div className='fixed inset-0 w-full h-full -z-10 bg-zinc-900'>
-            <Aurora
+          <div className='fixed inset-0 w-full h-full -z-10 bg-[#060010]/98'>
+            {/* <Aurora
               colorStops={["#3B82F6", "#0F172A", "#0F172A"]}
               blend={0.5}
               amplitude={1.0}
               speed={0.5}
-            />
+            /> */}
           </div>
 
           <div className={`relative z-10 ${shouldHideHeader ? 'pt-0' : 'pt-20'}`}>
