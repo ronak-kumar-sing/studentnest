@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
+import AuthenticatedHeader from './components/auth/AuthenticatedHeader'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -9,7 +10,6 @@ import BookingPage from './pages/BookingPage'
 import ScheduleVisitPage from './pages/ScheduleVisitPage'
 import SavedRoomsPage from './pages/SavedRoomsPage'
 import MessagesPage from './pages/MessagesPage'
-import Dashboard from './pages/dashboard/Dashboard'
 import PostRoom from './pages/dashboard/PostRoom'
 import BookingRequests from './pages/dashboard/BookingRequests'
 import Payments from './pages/dashboard/Payments'
@@ -19,14 +19,22 @@ import NotificationsPage from './pages/dashboard/NotificationsPage'
 import Aurora from './Backgrounds/Aurora/Aurora'
 import { ChatProvider } from './contexts/ChatContext'
 import { NotificationProvider } from './contexts/NotificationContext'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
 import ToastContainer from './components/notifications/Toast/ToastContainer'
 import DevStatusIndicator from './components/DevStatusIndicator'
 import ChatDemo from './pages/ChatDemo'
-import Auth from './pages/Auth'
+import Login from './components/auth/Login'
+import Signup from './components/auth/Signup'
+import VerificationPage from './components/auth/VerificationPage'
+import Profile from './components/profile/Profile'
+import ProtectedRoute from './components/ProtectedRoute'
+import OwnerDashboard from './pages/OwnerDashboard'
+import StudentDashboard from './pages/StudentDashboard'
 
 
-function App() {
+function AppContent() {
   const location = useLocation()
+  const { user, isAuthenticated } = useAuth()
 
   // Routes where header should be hidden
   const hideHeaderRoutes = [
@@ -34,7 +42,10 @@ function App() {
     '/book',
     '/visit',
     '/dashboard',
-    '/auth',
+    '/login',
+    '/signup',
+    '/verify',
+    '/profile',
     '/messages',
     '/saved'
   ]
@@ -44,57 +55,159 @@ function App() {
     location.pathname.includes(route)
   )
 
+  // Routes that should use AuthenticatedHeader
+  const authenticatedRoutes = ['/dashboard', '/profile', '/messages', '/saved']
+  const useAuthenticatedHeader = isAuthenticated && authenticatedRoutes.some(route =>
+    location.pathname.includes(route)
+  )
+
   return (
-    <NotificationProvider>
-      <ChatProvider>
-        <div className='relative min-h-screen overflow-x-hidden'>
-          {/* Aurora Background - Fixed to viewport */}
-          <div className='fixed inset-0 w-full h-full -z-10 bg-[#060010]/98'>
-            {/* <Aurora
-              colorStops={["#3B82F6", "#0F172A", "#0F172A"]}
-              blend={0.5}
-              amplitude={1.0}
-              speed={0.5}
-            /> */}
-          </div>
+    <div className='min-h-screen overflow-x-hidden bg-[#060010]/98'>
+      <div className={`${shouldHideHeader ? 'pt-0' : 'pt-25'}`}>
+        {!shouldHideHeader && (useAuthenticatedHeader ? <AuthenticatedHeader /> : <Header />)}
+        <Routes>
+          {/* Public Auth Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-          <div className={`relative z-10 ${shouldHideHeader ? 'pt-0' : 'pt-20'}`}>
-            {!shouldHideHeader && <Header />}
-            <Routes>
-              {/* Auth section */}
-              <Route path="/auth" element={<Auth />} />
+          {/* Protected Auth Routes */}
+          <Route
+            path="/verify"
+            element={
+              <ProtectedRoute requiredUserType="owner">
+                <VerificationPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
 
-              {/* Main App */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/saved" element={<SavedRoomsPage />} />
-              <Route path="/messages" element={<MessagesPage />} />
-              <Route path="/chat-demo" element={<ChatDemo />} />
-              <Route path="/room/:id" element={<RoomDetails />} />
-              <Route path="/room/:id/book" element={<BookingPage />} />
-              <Route path="/room/:id/visit" element={<ScheduleVisitPage />} />
+          {/* Main App Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/chat-demo" element={<ChatDemo />} />
+          <Route path="/room/:id" element={<RoomDetails />} />
+          <Route
+            path="/room/:id/book"
+            element={
+              <ProtectedRoute>
+                <BookingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/room/:id/visit"
+            element={
+              <ProtectedRoute>
+                <ScheduleVisitPage />
+              </ProtectedRoute>
+            }
+          />
 
-              {/* Dashboard Routes */}
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/post-room" element={<PostRoom />} />
-              <Route path="/dashboard/bookings" element={<BookingRequests />} />
-              <Route path="/dashboard/payments" element={<Payments />} />
-              <Route path="/dashboard/schedules" element={<SchedulesPage />} />
-              <Route path="/dashboard/notifications" element={<NotificationsPage />} />
-              <Route path="/dashboard/modifications" element={<RoomModification />} />
-            </Routes>
-            {!shouldHideHeader && <Footer />}
-          </div>
+          {/* Protected User Routes */}
+          <Route
+            path="/saved"
+            element={
+              <ProtectedRoute>
+                <SavedRoomsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <MessagesPage />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* Toast Notifications */}
-          <ToastContainer />
+          {/* Dashboard Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                {user?.userType === 'student' ? <StudentDashboard /> : <OwnerDashboard />}
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/post-room"
+            element={
+              <ProtectedRoute requiredUserType="owner" requireVerification={true}>
+                <PostRoom />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/bookings"
+            element={
+              <ProtectedRoute requiredUserType="owner">
+                <BookingRequests />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/payments"
+            element={
+              <ProtectedRoute>
+                <Payments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/schedules"
+            element={
+              <ProtectedRoute>
+                <SchedulesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/modifications"
+            element={
+              <ProtectedRoute requiredUserType="owner">
+                <RoomModification />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        {!shouldHideHeader && <Footer />}
+      </div>
 
-          {/* Development Status Indicator */}
-          <DevStatusIndicator />
-        </div>
-      </ChatProvider>
-    </NotificationProvider>
+      {/* Toast Notifications */}
+      <ToastContainer />
+
+      {/* Development Status Indicator */}
+      <DevStatusIndicator />
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <NotificationProvider>
+        <ChatProvider>
+          <AppContent />
+        </ChatProvider>
+      </NotificationProvider>
+    </AuthProvider>
   )
 }
 
