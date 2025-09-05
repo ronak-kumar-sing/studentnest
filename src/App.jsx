@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
-import AuthenticatedHeader from './components/auth/AuthenticatedHeader'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -55,16 +54,10 @@ function AppContent() {
     location.pathname.includes(route)
   )
 
-  // Routes that should use AuthenticatedHeader
-  const authenticatedRoutes = ['/dashboard', '/profile', '/messages', '/saved']
-  const useAuthenticatedHeader = isAuthenticated && authenticatedRoutes.some(route =>
-    location.pathname.includes(route)
-  )
-
   return (
     <div className='min-h-screen overflow-x-hidden bg-[#060010]/98'>
       <div className={`${shouldHideHeader ? 'pt-0' : 'pt-25'}`}>
-        {!shouldHideHeader && (useAuthenticatedHeader ? <AuthenticatedHeader /> : <Header />)}
+        {!shouldHideHeader && <Header />}
         <Routes>
           {/* Public Auth Routes */}
           <Route path="/login" element={<Login />} />
